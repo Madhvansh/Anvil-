@@ -46,9 +46,15 @@ anvil/api/static/
 *.duckdb
 *.duckdb.wal
 *.db
+*.db-shm
+*.db-wal
+*.db-journal
 *.sqlite
 *.sqlite3
+*.sqlite-shm
+*.sqlite-wal
 **/tips_v2.db
+**/_smoke_app.db*
 
 # ---- Data caches (large, regenerable). Keep the small committed CSVs. ----
 /data/

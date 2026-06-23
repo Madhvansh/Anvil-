@@ -62,11 +62,43 @@ freshest available, timestamped. Ship live now + run backtests in parallel for m
 
 - **M0 — context doc + reproduce** — ✅ this file. 500 classes evidenced in `go_live.log`.
 - **M1 — make the surface work live, never 500** — ✅ DONE (see below).
-- **M2 — real, live, chain-driven stock tips w/ dynamic universe** — ⬜ TODO.
-- **M3 — cross-sectional ranking quality** — ⬜ TODO.
-- **M4 — per-stock momentum + UI stock selection + rich cards** — ⬜ TODO.
+- **M2 — real, live, chain-driven stock tips w/ dynamic universe** — ✅ DONE (live-verified, see below).
+- **M3 — cross-sectional ranking quality (z-score, multi-tf stock momentum)** — ⬜ TODO.
+- **M4 — per-stock momentum + UI stock selection + rich cards** — 🔶 IN PROGRESS.
 - **M5 — honest accuracy / measured-edge wiring (backtest into default store)** — ⬜ TODO.
-- **M6 — verification + regression** — ⬜ ongoing.
+- **M6 — verification + regression** — 🔶 593 tests green; live smoke green; ongoing.
+
+### M2 — done (2026-06-23, live-verified)
+New modules + the live rewire of `/api/tips/equities`:
+- `tips/universe.py::select_universe` — dynamic stage-1 screen: liquidity (bhavcopy latest-day option
+  volume via `equities.discover_universe`, else instrument-master F&O list) blended 50/50 with
+  12-1 momentum (Yahoo cache); trims to `stock_universe_top_n`; config-floor fallback so never empty.
+- `tips/stocks.py::predict_stock` / `rank_universe_live` — stage-2 deep read: each stock's LIVE chain
+  (`conn.get_chain`) + live daily candles (`conn.get_candles`, Yahoo fallback) → `predict_for_chain`
+  → calibrated directional conviction + factor breakdown. Bounded `ThreadPoolExecutor` over ONE shared
+  connector; validation_store=None in threads (DuckDB not thread-safe), edge/tier attached
+  single-threaded from the pooled EQUITY cell. Cross-sectional BUY/SELL ranking.
+- `tips/stock_cache.py::get_stock_tips` — TTL cache (`stock_refresh_ttl_s`); degrades to last-cache,
+  then legacy EOD store read; never raises. Market-closed serves last-traded chains (timestamped).
+- `api/routers/tips.py::_equities` — serves `get_stock_tips()` when `stock_tips_live` (default True);
+  legacy store read behind the flag.
+- `config.py` — added `stock_tips_live`, `stock_universe_top_n`/`screen_n`, `stock_refresh_ttl_s`,
+  `stock_refresh_concurrency`, `stock_cockpit_enabled`/`cadence_s`.
+
+LIVE SMOKE (2026-06-23, real Upstox, market closed): SOURCE=live upstox; dynamic universe
+[INFY,TCS,RELIANCE,HDFCBANK,BHARTIARTL,SBIN]; per-stock fired factors = smart_money_block, gex_regime,
+oi_gex_confluence, oi_change_thrust, pcr_confirmation, mtf_trend (chain+greeks+OI+momentum);
+differentiated convictions (INFY .527, HDFCBANK SELL .604, …); as_of today; 0 errors. This is the
+exact "real stocks from chain/greeks/momentum analysis, live, differentiated" the owner asked for.
+
+Tests: `tests/test_stock_tips.py`, `tests/test_universe.py` (fake-connector, zero-key).
+
+### Known follow-ups (M3+)
+- Convictions cluster ~0.50–0.53 after hours (non-directional structures → RND P(above)≈0.5). M3:
+  cross-sectional z-score normalization + multi-timeframe stock momentum (fetch per-stock candles for
+  5m/15m/1h) for sharper, more comparable directional reads.
+- M4: stock selection in the UI dropdown (Tips + Momentum) + richer EquityCard (factor breakdown,
+  edge tier, live freshness) + a periodic refresh so the feed updates without a tab switch.
 
 ### M1 — done (2026-06-23)
 Changes (the ~30-line MVP that clears the 500 storm):

@@ -63,6 +63,22 @@ def _momentum_strength(symbol: str) -> float:
         return 0.0
 
 
+_MEMO: dict = {"ts": 0.0, "value": None}
+
+
+def cached_universe(ttl: float = 300.0) -> list[str]:
+    """``select_universe()`` memoised process-wide for ``ttl`` seconds — for the cheap symbol-picker
+    endpoint, so a dropdown load doesn't re-parse the bhavcopy CSV every time."""
+    import time
+
+    now = time.time()
+    if _MEMO["value"] and (now - _MEMO["ts"]) < ttl:
+        return _MEMO["value"]
+    out = select_universe()
+    _MEMO.update(ts=now, value=out)
+    return out
+
+
 def select_universe(top_n: int | None = None, screen_n: int | None = None, *,
                     cache_dir: str | None = None) -> list[str]:
     """The dynamic stock universe to deep-analyse: a liquidity-screened pool re-ranked by a

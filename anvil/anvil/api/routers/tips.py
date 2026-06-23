@@ -148,6 +148,22 @@ async def equities(user: User = Depends(require_tips)):
     return await run_in_threadpool(_equities)
 
 
+def _universe() -> dict:
+    from ...config import SUPPORTED_INDEXES
+    from ...tips.universe import cached_universe
+
+    stocks = cached_universe() if SETTINGS.stock_tips_live else [
+        s.strip().upper() for s in SETTINGS.stock_options_universe.split(",") if s.strip()]
+    return {"indexes": SUPPORTED_INDEXES, "stocks": stocks}
+
+
+@router.get("/universe")
+async def universe(user: User = Depends(require_tips)):
+    """The symbol picker's contents: the supported indices + the live dynamic single-stock universe
+    (most-liquid + highest-momentum names) the tips/momentum tabs can analyse."""
+    return await run_in_threadpool(_universe)
+
+
 def _open(factory):
     """Open a DuckDB-backed store, degrading to None if it can't be opened (e.g. a cross-process
     writer holds the single-writer lock). The live prediction is always-present, so a missing overlay

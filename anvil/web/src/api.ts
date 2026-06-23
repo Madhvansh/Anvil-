@@ -91,6 +91,8 @@ export const api = {
   tips: (u: string) => req<any>("GET", `/api/tips/${u}`),
   tipsEquities: () => req<any>("GET", "/api/tips/equities"),
   tipsTrackRecord: () => req<any>("GET", "/api/tips/track-record"),
+  // The symbol picker's contents: indices + the live dynamic single-stock universe.
+  tipsUniverse: () => req<{ indexes: string[]; stocks: string[] }>("GET", "/api/tips/universe"),
   trustDial: () => req<any>("GET", "/api/tips/trust-dial"),
 
   // Multi-timeframe + options-flow momentum surface (Wave 2). Public analytics: consensus read,

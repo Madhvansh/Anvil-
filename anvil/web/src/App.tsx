@@ -145,6 +145,11 @@ type Tab = "today" | "tips" | "momentum" | "sim" | "risk" | "copilot" | "alerts"
 
 function Dashboard({ me, onLogout }: { me: Me; onLogout: () => void }) {
   const [u, setU] = useState(me.profile.benchmark || "NIFTY");
+  // The live dynamic single-stock universe for the symbol picker (indices are static in INDEXES).
+  const [stocks, setStocks] = useState<string[]>([]);
+  useEffect(() => {
+    api.tipsUniverse().then((r) => setStocks(r.stocks || [])).catch(() => {});
+  }, []);
   const [mode, setMode] = useState<Mode>(me.profile.explain_mode || "trader");
   const [tab, setTab] = useState<Tab>("today");
   // Keep-alive: render each tab the first time it's opened, then keep it MOUNTED and merely hide the
@@ -217,7 +222,14 @@ function Dashboard({ me, onLogout }: { me: Me; onLogout: () => void }) {
       <div className="topbar">
         <div className="brand"><img className="logo" src="/icon.svg" /> Anvil</div>
         <select value={u} onChange={(e) => setU(e.target.value)} style={{ width: 150 }}>
-          {INDEXES.map((i) => <option key={i}>{i}</option>)}
+          <optgroup label="Indices">
+            {INDEXES.map((i) => <option key={i} value={i}>{i}</option>)}
+          </optgroup>
+          {stocks.length > 0 && (
+            <optgroup label="Stocks (live)">
+              {stocks.map((s) => <option key={s} value={s}>{s}</option>)}
+            </optgroup>
+          )}
         </select>
         <div className="seg">
           {(["simple", "trader", "expert"] as Mode[]).map((m) => (
@@ -631,6 +643,15 @@ function EquityCard({ t, side }: { t: any; side: "BUY" | "SELL" }) {
           <Stat k="Stop" v={<span className="mono">{fmt(t.stop)}</span>} />
           <Stat k="Horizon" v={<span className="mono">{fmt(t.horizon_days, 0)}d</span>} />
         </div>
+        {(t.regime_bucket || t.n_factors_fired != null || (t.factors && t.factors.length)) && (
+          <div className="muted" style={{ fontSize: 11, marginTop: 4 }}>
+            {t.regime_bucket ? String(t.regime_bucket).replace(/_/g, " ") : ""}
+            {t.n_factors_fired != null ? ` · ${t.n_factors_fired} signals` : ""}
+            {Array.isArray(t.factors) && t.factors.length
+              ? ` · ${t.factors.slice(0, 3).map((f: any) => String(f.name).replace(/_/g, " ")).join(", ")}`
+              : ""}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -645,12 +666,18 @@ function TipsTab({ u }: { u: string }) {
   useEffect(() => {
     setTips(null);
     setErr("");
-    api.tips(u).then(setTips).catch((e) =>
+    const loadTips = () => api.tips(u).then(setTips).catch((e) =>
       setErr(e instanceof ApiError && e.status === 403
         ? "Tips are disabled on this instance (TIPS_ENABLED=false)."
         : "Couldn't load tips."));
-    api.tipsEquities().then(setEq).catch(() => setEq(null));
+    const loadEq = () => api.tipsEquities().then(setEq).catch(() => setEq(null));
+    loadTips();
+    loadEq();
     api.tipsTrackRecord().then(setTr).catch(() => setTr(null));
+    // Keep the live prediction + cross-sectional stock feed fresh without a tab switch
+    // (matches the server-side stock cache TTL ~90s).
+    const poll = setInterval(() => { loadTips(); loadEq(); }, 90000);
+    return () => clearInterval(poll);
   }, [u]);
 
   const pred = tips?.prediction;
@@ -707,12 +734,16 @@ function TipsTab({ u }: { u: string }) {
 
       <Card q="Stock tips — cross-sectional BUY / SELL" full>
         <div className="muted" style={{ fontSize: 12, marginBottom: 8 }}>
-          Single-stock directional calls, ranked across the F&O universe (momentum + OI buildup). EOD/swing horizon, after costs.
-          {eq?.as_of ? <span className="muted"> · as of {String(eq.as_of).slice(0, 10)}</span> : null}
+          Live single-stock calls — a dynamic universe (most-liquid + highest-momentum F&O names),
+          deep-analysed on the full stack: option chain, greeks, OI, dealer-flow & momentum, ranked cross-sectionally. <PaperBadge /> not advice.
+          {eq?.computed_ts
+            ? <span className="muted"> · {eq.stale ? "last good" : "live"} as of {new Date(eq.computed_ts).toLocaleTimeString()}</span>
+            : eq?.as_of ? <span className="muted"> · as of {String(eq.as_of).slice(0, 10)}</span> : null}
+          {Array.isArray(eq?.universe) && eq.universe.length ? <span className="muted"> · {eq.universe.length} screened</span> : null}
         </div>
         {!eq && <div className="muted">Loading stock tips…</div>}
         {eq && buys.length === 0 && sells.length === 0 && (
-          <div className="muted">No stock tips yet — run <span className="mono">anvil tips run-eod --equities</span> to populate.</div>
+          <div className="muted">No directional stock tips right now — the engine stays quiet rather than force a call.</div>
         )}
         <div className="row" style={{ gap: 16, alignItems: "flex-start", flexWrap: "wrap" }}>
           <div style={{ flex: "1 1 280px", minWidth: 260 }}>
