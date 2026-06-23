@@ -358,14 +358,18 @@ commit them rather than starting over.
    of sin as a misleading accuracy number.)
 
 7. **`MAX LOSS` understates the true tail on naked structures (risk-honesty bug).** The short-strangle
-   card shows `MAX LOSS = 2.5 × credit` (`strategy/library.py` ~:246–247) — a *modeled stop*, not a real
-   floor — e.g. ~₹46.7k against ~₹18.7k credit, while the card's own payoff chart plots a true
-   held-to-horizon min of ~**−₹18.4 lakh** (the structure is tagged `naked: True`). A weekend gap blows
-   straight through a 2.5×-credit stop. **Fix:** display the **CVaR-based true tail** (or the plotted
-   held-to-horizon min) as `MAX LOSS` for naked/undefined-risk structures, with the stop shown
-   separately as "modeled stop (not guaranteed)." Defined-risk structures (iron condor = width − credit)
-   are fine. This overlaps the Wave-4/P4 sizing item ("make naked `max_loss` a CVaR-based true tail") —
-   but the **display** half is shippable now, behind tests, without touching sizing.
+   card shows `MAX LOSS = stop_mult · credit` with `stop_mult = 2.5` (`strategy/library.py:257-258`,
+   tagged `extra_drivers={"naked": True}` at :270) — a *modeled stop*, not a real floor — e.g. ~₹46.7k
+   against ~₹18.7k credit, while the card's own payoff chart plots a true held-to-horizon min of
+   ~**−₹18.4 lakh**. A weekend gap blows straight through a 2.5×-credit stop. **The honest tail is
+   already computed** — `tail_loss = naked_stress_max_loss(legs, lot, ctx.spot, ctx.expected_move)`
+   (library.py ~:153, a ≈3σ stress) — but it is **not surfaced on the `TradeCandidate`** (the return
+   omits it; only the EV/stop `max_loss` is carried). **Fix:** thread `tail_loss` onto the candidate and
+   display it as the `MAX LOSS` (or "true tail / CVaR") for naked/undefined-risk structures, with the
+   2.5×-credit number relabeled "modeled stop (not guaranteed)." Don't overwrite the EV `max_loss`
+   in-place (the comment at library.py:149-151 warns that corrupts EV) — add a field. Defined-risk
+   structures (iron condor = width − credit) are fine. The **display** half is shippable now, behind
+   tests, without touching sizing; the sizing half (cap units against the gap) is the Wave-4/P4 item.
 
 **Recurring / structural problems (across many sessions — design for them, don't just patch):**
 - **R1 — DuckDB single-writer lock.** Recurs by design. Enforce a single-instance rule for
