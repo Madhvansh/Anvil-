@@ -1,0 +1,17 @@
+# Keep the build context lean. The repo is bind-mounted at runtime anyway.
+**/__pycache__/
+**/*.py[cod]
+**/*.egg-info/
+.git/
+.github/
+.venv/
+venv/
+node_modules/
+.next/
+.pytest_cache/
+.ruff_cache/
+data/snapshots/
+data/*.sqlite
+data/*.db
+*.md
+!README.md

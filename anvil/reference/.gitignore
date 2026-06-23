@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Runtime data artifacts (committed fixtures live in data/fixtures/ and ARE tracked)
+data/snapshots/
+data/*.sqlite
+data/*.sqlite-journal
+data/*.sqlite-wal
+data/*.sqlite-shm
+data/*.db
+data/*.duckdb
+data/*.duckdb.wal
+
+# Node (Phase 1 frontend)
+node_modules/
+.next/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Secrets (none required in Phase 0 — offline-first)
+.env
+.env.*
+!.env.example

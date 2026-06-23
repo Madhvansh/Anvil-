@@ -1,0 +1,49 @@
+# Local Groww-via-Docker stack — Python 3.12 image (has the growwapi SDK the host's 3.14 can't
+# install) + Postgres, reachable directly on http://localhost:8080 with NO Caddy/TLS/domain.
+#
+#   1) (Groww data needs the market-data role on your API key — enable it first, see below.)
+#   2) Put your Groww access token in .env:   GROWW_ACCESS_TOKEN=<token>
+#      and set                                 ANVIL_PRIMARY_SOURCE=groww
+#   3) docker compose -f docker-compose.local.yml up -d --build
+#   4) open http://localhost:8080  -> register the owner account -> data is live from Groww.
+#
+# Stop:  docker compose -f docker-compose.local.yml down        (add -v to wipe the DB volume)
+services:
+  anvil:
+    build: .
+    image: anvil:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # Primary live source. Upstox (pure httpx, 1-year token) is the ready live path and the default;
+      # set ANVIL_PRIMARY_SOURCE=groww in .env to prefer Groww (needs its paid market-data role).
+      - ANVIL_PRIMARY_SOURCE=${ANVIL_PRIMARY_SOURCE:-upstox}
+      - ANVIL_DATABASE_URL=postgresql+asyncpg://anvil:${POSTGRES_PASSWORD:-anvil}@postgres:5432/anvil
+      - ANVIL_STORE_PATH=/app/anvil_data/anvil_store.duckdb
+      - ANVIL_LEDGER_PATH=/app/anvil_data/anvil_ledger.duckdb
+    ports:
+      - "8080:8000"   # reach the app directly; no reverse proxy
+    volumes:
+      - anvil_data:/app/anvil_data
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=anvil
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-anvil}
+      - POSTGRES_DB=anvil
+    volumes:
+      - pgdata_local:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U anvil"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  anvil_data:
+  pgdata_local:

@@ -1,0 +1,33 @@
+{
+  "generated": "2026-06-22T11:05:08+05:30",
+  "edge_status": {
+    "edge_verified": false,
+    "measured_hit_rate": 0.493,
+    "message": "No directional edge proven yet \u2014 backtested hit-rate ~49% (<= coin flip after costs). Tips are analytics/context, NOT validated signals. Default stance: abstain."
+  },
+  "totals": {
+    "tips_logged": 345,
+    "resolved": 345,
+    "still_open": 0
+  },
+  "calibration": {
+    "resolved_directional": 319,
+    "resolved_neutral_abstain": 26,
+    "hit_rate": 0.5298,
+    "brier_score": 0.2504,
+    "mean_stated_confidence": 0.4934,
+    "reliability_curve": []
+  },
+  "paper_pnl": {
+    "trades_taken": 319,
+    "win_rate": 0.4953,
+    "avg_win_pct": 1.075,
+    "avg_loss_pct": -1.061,
+    "expectancy_pct": -0.0032,
+    "total_paper_pnl_inr": -1033.67,
+    "compounded_return_pct": -4.894,
+    "capital_per_tip_inr": 100000.0,
+    "cost_bps_round_trip": 8.0
+  },
+  "disclaimer": "Anvil Live produces calibrated probabilities and ranges from live market data for ANALYTICS & EDUCATION only. It is NOT investment advice and makes NO guarantee of profit. Predictions are uncertain; act at your own risk. Read-only \u2014 no orders are ever placed. Reliability is tracked honestly and shown openly so you can judge for yourself before trusting any tip."
+}

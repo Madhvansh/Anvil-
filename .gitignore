@@ -1,0 +1,68 @@
+# ============================================================
+# Anvil — repository ignore rules
+# Goal: never publish secrets, live databases, virtualenvs, or
+# regenerable build/cache artifacts. Keep source + docs + small
+# committed data CSVs (events/earnings/holidays).
+# ============================================================
+
+# ---- Secrets (NEVER commit) ----
+**/.env
+**/.env.*
+!**/.env.example
+*.bak
+*.pem
+*.key
+*.pfx
+secrets/
+**/token_store.json
+**/.anvil/tokens/
+
+# ---- Preserved local git history of the inner anvil repo ----
+anvil/.git_disabled/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.runtmp/
+.venv/
+**/.venv/
+venv/
+env/
+ENV/
+
+# ---- Node / web build artifacts ----
+node_modules/
+**/node_modules/
+anvil/web/dist/
+anvil/api/static/
+*.tsbuildinfo
+
+# ---- Databases & stores (regenerable, may hold broker tokens) ----
+*.duckdb
+*.duckdb.wal
+*.db
+*.sqlite
+*.sqlite3
+**/tips_v2.db
+
+# ---- Data caches (large, regenerable). Keep the small committed CSVs. ----
+/data/
+**/closes_cache/
+**/instruments_cache/
+**/positioning_cache/
+**/bhavcopy_cache/
+anvil/data/_cache*/
+
+# ---- Logs & runtime ----
+*.log
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

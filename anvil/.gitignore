@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# Test / cache
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Anvil data / secrets
+*.duckdb
+*.sqlite
+*.db
+*.parquet
+anvil_store.duckdb
+anvil_data/
+# scratch fetch scripts, bhavcopy cache, session DBs (regenerated via `anvil backtest fetch`)
+data/
+# ad-hoc probe scripts + run logs (scratch; excluded from ruff too)
+.runtmp/
+.env
+.env.*
+!.env.example
+.anvil/
+tokens/
+
+# Frontend (React/Vite PWA — added in M5)
+web/node_modules/
+web/dist/
+# Built SPA output (the multi-stage Docker build regenerates this; not committed)
+anvil/api/static/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

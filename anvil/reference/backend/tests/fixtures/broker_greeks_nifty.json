@@ -1,0 +1,23 @@
+{
+  "description": "Broker-shown Greeks for known NSE strikes, used to validate the engine against a real terminal. Phase 0 ships the FORMAT only; populate 'rows' with captured numbers, then the broker_validation test becomes a required gate (see docs/PHASE1_BACKLOG.md A1).",
+  "status": "pending_capture",
+  "captured_at": null,
+  "underlying": "NIFTY",
+  "future_price": null,
+  "risk_free_rate": 0.065,
+  "unit_conventions": {
+    "theta": "per calendar day",
+    "vega": "per 1 percentage-point (0.01) change in IV",
+    "rho": "per 1 percentage-point change in rate"
+  },
+  "rows": [],
+  "row_schema_example": {
+    "strike": 22000,
+    "option_type": "c",
+    "expiry": "2026-06-26",
+    "t_years": 0.038356,
+    "broker_iv": 0.1182,
+    "broker": { "delta": 0.52, "gamma": 0.0011, "theta": -7.8, "vega": 12.4 },
+    "tol": { "delta": 0.02, "gamma": 0.0003, "theta": 1.5, "vega": 1.5 }
+  }
+}

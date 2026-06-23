@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "oip"
+version = "0.1.0"
+description = "Options Intelligence Platform — calibrated options intelligence for Indian markets (NSE/BSE). Phase 0 foundation."
+requires-python = ">=3.12"
+license = { text = "Proprietary" }
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "pandas>=2.1",
+    "pyarrow>=14",
+    "duckdb>=0.10",
+    "vollib>=1.0",
+    "py_vollib>=1.0.1",
+    "pydantic>=2.5",
+    "pydantic-settings>=2.1",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "requests>=2.31",
+    "python-dateutil>=2.8",
+    "tzdata>=2024.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "httpx>=0.27",
+    "ruff>=0.4",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+# pythonpath lets tests import `oip` from src/ without an install step (local or CI).
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = [
+    "unit: fast, self-contained unit tests",
+    "validation: quant correctness tests — the merge gate (Black-76 known values, parity, finite-difference, IV round-trip, edge cases)",
+    "broker_validation: validates computed Greeks against captured broker-shown values; non-gating until real broker numbers are recorded, then becomes required",
+    "nse_live: hits live NSE public endpoints; never gates the build (offline-first)",
+]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+# E501: long fixture/docstring lines are fine.
+# B008: FastAPI's Depends() in argument defaults is the intended idiom, not a bug.
+ignore = ["E501", "B008"]

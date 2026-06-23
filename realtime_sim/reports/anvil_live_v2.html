@@ -1,0 +1,59 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Anvil Live v2</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0d1117;color:#e6edf3;font:14px/1.5 system-ui,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:20px}
+h1{font-size:22px;margin:0} h2{font-size:15px;margin:24px 0 8px;color:#9aa4b2;text-transform:uppercase;letter-spacing:.05em}
+.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:1px solid #21262d;padding-bottom:14px}
+.live{color:#16c784;font-weight:600} .gen{color:#8a8f98;font-size:12px}
+button{background:#238636;color:#fff;border:0;border-radius:6px;padding:9px 16px;font-size:14px;font-weight:600;cursor:pointer}
+button:hover{background:#2ea043} button:disabled{background:#30363d;cursor:wait}
+table{width:100%;border-collapse:collapse;margin-top:6px;font-size:13px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid #21262d} th{color:#9aa4b2;font-weight:600;font-size:11px;text-transform:uppercase}
+.num{text-align:right;font-variant-numeric:tabular-nums} .dim{color:#8a8f98} .small{font-size:11px}
+.pos{color:#16c784} .neg{color:#e2574c}
+.badge{color:#0d1117;font-weight:700;font-size:11px;padding:2px 8px;border-radius:10px}
+.kpis{display:flex;flex-wrap:wrap;gap:14px;margin:8px 0}
+.kpi{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:10px 14px;min-width:110px}
+.kpi span{display:block;font-size:20px;font-weight:700}
+.card{background:#0f141a;border:1px solid #21262d;border-radius:10px;padding:14px 16px;margin-top:8px}
+.warn{color:#f5a623;font-size:12px;margin-top:8px} .disc{color:#6e7681;font-size:11px;margin-top:24px;border-top:1px solid #21262d;padding-top:12px}
+#overlay{display:none;position:fixed;inset:0;background:rgba(13,17,23,.85);align-items:center;justify-content:center;font-size:18px;color:#16c784}
+</style></head><body><div class="wrap">
+<div class="top"><div><h1>⚒ Anvil Live <span class="live">v2</span></h1>
+<div class="gen">maximum-monetization tip sheet · <span class="live">● UPSTOX LIVE</span> · generated 2026-06-22T14:13:07+05:30</div></div>
+<button id="run" onclick="alert('This is a saved snapshot. For live refresh run: python serve_v2.py')">↻ Run live now</button></div>
+
+<h2>Maximum-monetization tip sheet — 0 actionable · 1 watch</h2>
+<table><thead><tr><th>#</th><th>Status</th><th>Underlying</th><th>Strategy / legs</th><th class="num">POP</th>
+<th class="num">EV/risk</th><th class="num">Net-EV</th><th class="num">Max loss</th><th class="num">Lots</th></tr></thead>
+<tbody><tr><td class='num'>1</td><td><span class="badge" style="background:#f5a623">WATCH</span></td><td><b>SBIN</b> <span class='dim'>stock</span></td><td>iron_condor<div class='dim small'>SELL 1070CE, BUY 1090CE, SELL 1010PE, BUY 990PE</div></td><td class='num'>85.2%</td><td class='num'>0.097</td><td class='num pos'>₹1,177</td><td class='num neg'>₹12,150</td><td class='num'>1</td></tr></tbody></table>
+
+<h2>Live market read — VRP · regime · positioning</h2>
+<table><thead><tr><th>Underlying</th><th>Class</th><th class="num">Spot</th><th>Expiry</th><th class="num">Impl IV</th>
+<th class="num">Real Vol</th><th class="num">VRP</th><th>Signal</th><th>Regime</th></tr></thead>
+<tbody><tr><td>NIFTY</td><td class='dim'>index</td><td class='num'>24125.20</td><td class='dim'>2026-06-23 (1.1d)</td><td class='num'>13.1%</td><td class='num'>12.8%</td><td class='num'>0.98</td><td><span style='color:#8a8f98;font-weight:600'>NEUTRAL</span></td><td class='dim'>positive_gamma_mean_revert</td></tr>
+<tr><td>BANKNIFTY</td><td class='dim'>index</td><td class='num'>57888.60</td><td class='dim'>2026-06-30 (8.1d)</td><td class='num'>12.7%</td><td class='num'>17.3%</td><td class='num'>1.37</td><td><span style='color:#e2574c;font-weight:600'>BUY_VOL</span></td><td class='dim'>negative_gamma_trend_amplify</td></tr>
+<tr><td>SENSEX</td><td class='dim'>index</td><td class='num'>77202.46</td><td class='dim'>2026-06-25 (3.1d)</td><td class='num'>13.5%</td><td class='num'>13.7%</td><td class='num'>1.02</td><td><span style='color:#8a8f98;font-weight:600'>NEUTRAL</span></td><td class='dim'>positive_gamma_mean_revert</td></tr>
+<tr><td>RELIANCE</td><td class='dim'>stock</td><td class='num'>1331.40</td><td class='dim'>2026-06-30 (8.1d)</td><td class='num'>22.7%</td><td class='num'>18.2%</td><td class='num'>0.80</td><td><span style='color:#16c784;font-weight:600'>SELL_VOL</span></td><td class='dim'>positive_gamma_mean_revert</td></tr>
+<tr><td>HDFCBANK</td><td class='dim'>stock</td><td class='num'>787.10</td><td class='dim'>2026-06-30 (8.1d)</td><td class='num'>20.5%</td><td class='num'>24.9%</td><td class='num'>1.22</td><td><span style='color:#e2574c;font-weight:600'>BUY_VOL</span></td><td class='dim'>negative_gamma_trend_amplify</td></tr>
+<tr><td>ICICIBANK</td><td class='dim'>stock</td><td class='num'>1353.80</td><td class='dim'>2026-06-30 (8.1d)</td><td class='num'>16.5%</td><td class='num'>19.3%</td><td class='num'>1.17</td><td><span style='color:#e2574c;font-weight:600'>BUY_VOL</span></td><td class='dim'>negative_gamma_trend_amplify</td></tr>
+<tr><td>INFY</td><td class='dim'>stock</td><td class='num'>1073.90</td><td class='dim'>2026-06-30 (8.1d)</td><td class='num'>27.1%</td><td class='num'>41.8%</td><td class='num'>1.54</td><td><span style='color:#e2574c;font-weight:600'>BUY_VOL</span></td><td class='dim'>negative_gamma_trend_amplify</td></tr>
+<tr><td>TCS</td><td class='dim'>stock</td><td class='num'>2135.10</td><td class='dim'>2026-06-30 (8.1d)</td><td class='num'>25.1%</td><td class='num'>43.6%</td><td class='num'>1.74</td><td><span style='color:#e2574c;font-weight:600'>BUY_VOL</span></td><td class='dim'>negative_gamma_trend_amplify</td></tr>
+<tr><td>SBIN</td><td class='dim'>stock</td><td class='num'>1037.75</td><td class='dim'>2026-06-30 (8.1d)</td><td class='num'>20.9%</td><td class='num'>15.2%</td><td class='num'>0.73</td><td><span style='color:#16c784;font-weight:600'>SELL_VOL</span></td><td class='dim'>positive_gamma_mean_revert</td></tr>
+<tr><td>BHARTIARTL</td><td class='dim'>stock</td><td class='num'>1920.70</td><td class='dim'>2026-06-30 (8.1d)</td><td class='num'>16.8%</td><td class='num'>17.1%</td><td class='num'>1.01</td><td><span style='color:#8a8f98;font-weight:600'>NEUTRAL</span></td><td class='dim'>positive_gamma_mean_revert</td></tr>
+<tr><td>LT</td><td class='dim'>stock</td><td class='num'>4202.40</td><td class='dim'>2026-06-30 (8.1d)</td><td class='num'>20.8%</td><td class='num'>25.6%</td><td class='num'>1.23</td><td><span style='color:#e2574c;font-weight:600'>BUY_VOL</span></td><td class='dim'>negative_gamma_trend_amplify</td></tr>
+<tr><td>AXISBANK</td><td class='dim'>stock</td><td class='num'>1359.60</td><td class='dim'>2026-06-30 (8.1d)</td><td class='num'>19.0%</td><td class='num'>21.5%</td><td class='num'>1.13</td><td><span style='color:#e2574c;font-weight:600'>BUY_VOL</span></td><td class='dim'>negative_gamma_trend_amplify</td></tr>
+<tr><td>MARUTI</td><td class='dim'>stock</td><td class='num'>13479.00</td><td class='dim'>2026-06-30 (8.1d)</td><td class='num'>22.1%</td><td class='num'>19.9%</td><td class='num'>0.90</td><td><span style='color:#16c784;font-weight:600'>SELL_VOL</span></td><td class='dim'>positive_gamma_mean_revert</td></tr></tbody></table>
+
+<h2>Live scorecard (track record so far)</h2><div class="card"><div class='kpis'><div class='kpi'><span>0</span>resolved</div><div class='kpi'><span>1</span>open (live)</div><div class='kpi'><span>66</span>abstained</div><div class='kpi'><span>67</span>logged</div></div><p class='dim'>0 resolved structures yet — a fresh book has no track record. The WATCH tips resolve at their option expiries; the live edge accrues <b>forward</b>. See the VRP backtest below for the honest prior.</p></div>
+
+<h2>VRP edge — real backtest prior (India VIX vs realized NIFTY, 2y, no look-ahead)</h2><div class="card"><p class='dim'>PARAMETER-FREE daily ATM-straddle SELL on NIFTY. IMPLIED=India VIX close[t] (published, point-in-time), REALIZED=actual NIFTY close[t]→[t+1]. No look-ahead, nothing fitted. Cost = 6% of premium (2 legs, spread + statutory). NOT a backtest of the live structures (no historical chains exist) — it measures the VRP edge those structures harvest.</p><p class='dim small'>window 2024-06-19 → 2026-06-19 (492 days) on ₹1,000,000</p><div class='kpis'><div class='kpi'><span>65%</span>win rate</div><div class='kpi'><span class='pos'>16.06%</span>/yr</div><div class='kpi'><span>1.887</span>Sharpe</div><div class='kpi'><span class='neg'>-13.69%</span>max drawdown</div><div class='kpi'><span class='neg'>-2.796%</span>worst day</div><div class='kpi'><span>0.836</span>realized/implied</div></div><p class='warn'>This is the EDGE PRIOR, not a track record. It is the cleanest causal measurement of NIFTY&#x27;s variance risk premium with real implied (VIX) and real realized data. It still selling-insurance: it wins most days, then loses big on gaps — read maxDD, worst-day and CVaR, never the win-rate alone.</p></div>
+
+<div class="disc">Anvil Live v2 ranks option-structure trade IDEAS from live market data to study which approach earns the most, net of realistic India F&amp;O costs. ANALYTICS &amp; EDUCATION ONLY — NOT investment advice, NOT a buy/sell/target recommendation, NO guaranteed profit. Premium-selling carries TAIL RISK: it wins often and small, then can lose big on a gap — the scorecard tracks max drawdown / worst day / MAE so that risk is never hidden. Read-only: no order is ever placed. In India, paid securities advice can require SEBI Research-Analyst registration — keep this in the analytics/education lane.</div>
+</div>
+<div id="overlay">Pulling live Upstox feed &amp; pricing structures… (~30–60s)</div>
+<script>
+function runLive(){document.getElementById('overlay').style.display='flex';document.getElementById('run').disabled=true;
+fetch('/api/run').then(r=>r.json()).then(()=>location.reload()).catch(e=>{alert('run failed: '+e);location.reload()});}
+</script></body></html>

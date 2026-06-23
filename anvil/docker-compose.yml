@@ -1,0 +1,61 @@
+# Anvil deploy stack: app (Postgres-backed) + Postgres + Caddy (auto-TLS + reverse proxy).
+#   cp .env.example .env   # fill ANVIL_SECRET_KEY, POSTGRES_PASSWORD, ANVIL_DOMAIN, broker keys
+#   docker compose up -d --build
+# Caddy serves HTTPS on 80/443; the app is reached only through it. DuckDB/Parquet research
+# moat lives on the anvil_data volume; Postgres holds users/sessions/alerts/etc. on pgdata.
+#
+# Dev (no Docker): run `uvicorn anvil.api.app:app --reload` + `cd web && npm run dev` (proxy).
+# Run tests in the container: `docker compose run --rm anvil pytest -q`.
+services:
+  anvil:
+    build: .
+    image: anvil:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - ANVIL_PRIMARY_SOURCE=${ANVIL_PRIMARY_SOURCE:-demo}
+      - ANVIL_DATABASE_URL=postgresql+asyncpg://anvil:${POSTGRES_PASSWORD:-anvil}@postgres:5432/anvil
+      - ANVIL_STORE_PATH=/app/anvil_data/anvil_store.duckdb
+      - ANVIL_LEDGER_PATH=/app/anvil_data/anvil_ledger.duckdb
+    volumes:
+      - anvil_data:/app/anvil_data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    expose:
+      - "8000"
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=anvil
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-anvil}
+      - POSTGRES_DB=anvil
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U anvil"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - anvil
+
+volumes:
+  anvil_data:
+  pgdata:
+  caddy_data:
+  caddy_config:

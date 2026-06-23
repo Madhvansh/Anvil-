@@ -1,0 +1,41 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  backend-tests:
+    name: Backend tests (Python 3.12 container)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build backend image (Python 3.12)
+        run: docker build -t oip-backend:ci ./backend
+
+      - name: Lint (ruff)
+        run: docker run --rm -v "$PWD:/app" -w /app/backend oip-backend:ci ruff check .
+
+      - name: Tests — unit + validation gate
+        run: >
+          docker run --rm -v "$PWD:/app" -w /app/backend -e OIP_DATA_DIR=/app/data
+          oip-backend:ci pytest -m "unit or validation" --strict-markers -q
+
+      - name: E2E demo smoke (offline, reproducibility self-check)
+        run: >
+          docker run --rm -v "$PWD:/app" -w /app/backend -e OIP_DATA_DIR=/app/data
+          oip-backend:ci python scripts/demo_phase0.py --underlying NIFTY
+
+  nse-live-and-broker:
+    name: NSE-live + broker validation (non-gating)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build backend image
+        run: docker build -t oip-backend:ci ./backend
+      - name: Live NSE + broker-validation (informational; never blocks merge)
+        run: >
+          docker run --rm -v "$PWD:/app" -w /app/backend -e OIP_DATA_DIR=/app/data
+          oip-backend:ci pytest -m "broker_validation or nse_live" --strict-markers -q || true

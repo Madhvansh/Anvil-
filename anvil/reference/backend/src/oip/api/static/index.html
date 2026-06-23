@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Options Intelligence Platform — Phase 0</title>
+  <style>
+    :root { --bg:#0e1117; --panel:#161b22; --line:#30363d; --text:#e6edf3; --muted:#9da7b3;
+            --call:#1f6feb22; --put:#f8514922; --accent:#58a6ff; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+           background:var(--bg); color:var(--text); }
+    header { padding:18px 24px; border-bottom:1px solid var(--line); }
+    h1 { margin:0; font-size:18px; }
+    .sub { color:var(--muted); font-size:13px; margin-top:4px; }
+    .disclaimer { background:#3d2c00; color:#ffd866; border:1px solid #6b4f00;
+                  padding:10px 24px; font-size:13px; }
+    .meta { display:flex; flex-wrap:wrap; gap:18px; padding:14px 24px; font-size:13px;
+            border-bottom:1px solid var(--line); }
+    .meta div { color:var(--muted); }
+    .meta b { color:var(--text); }
+    .tag { display:inline-block; background:#1f6feb22; color:var(--accent); border:1px solid #1f6feb55;
+           border-radius:4px; padding:1px 6px; font-size:11px; margin-left:6px; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th, td { padding:7px 10px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap; }
+    th { color:var(--muted); font-weight:600; position:sticky; top:0; background:var(--panel); }
+    .strike { text-align:center; font-weight:700; background:var(--panel); }
+    .call { background:var(--call); } .put { background:var(--put); }
+    .group { text-align:center; color:var(--muted); font-weight:600; }
+    .err { padding:24px; color:#f85149; }
+    footer { padding:14px 24px; color:var(--muted); font-size:12px; border-top:1px solid var(--line); }
+    code { color:var(--accent); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Options Intelligence Platform <span class="tag">Phase 0</span></h1>
+    <div class="sub">Calibrated options intelligence for Indian markets — we prove calibration, not "accuracy".</div>
+  </header>
+
+  <!-- Persistent, non-dismissible disclaimer (a product hard rail). -->
+  <div class="disclaimer" id="disclaimer">
+    Computed analytics (Black-76 on the futures price), shown as probabilistic context — not investment advice. No accuracy or guaranteed return is claimed.
+  </div>
+
+  <div class="meta" id="meta"></div>
+  <div id="content"><div class="err" style="color:var(--muted)">Loading NIFTY chain…</div></div>
+  <footer>
+    Greeks computed locally with <b>Black-76</b> (Indian index options settle off futures). Source:
+    <code id="src">offline fixture</code>. No accuracy or guaranteed return is claimed anywhere.
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>

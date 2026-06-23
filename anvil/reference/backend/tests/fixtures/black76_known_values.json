@@ -1,0 +1,46 @@
+{
+  "description": "Known Black-76 inputs for validating the engine. Expected outputs are recomputed from the closed form via SciPy in the tests (conftest Black76Reference); 'approx_price' anchors the absolute scale to an externally-derivable number. t is ACT/365 years; r and sigma are decimals; F is the futures price.",
+  "tolerance": { "rtol": 1e-6, "atol": 1e-8 },
+  "cases": [
+    {
+      "name": "atm_nifty_monthly",
+      "flag": "c",
+      "F": 22000.0,
+      "K": 22000.0,
+      "t": 0.0821917808219178,
+      "r": 0.065,
+      "sigma": 0.14,
+      "atm": true,
+      "approx_price": 350.3,
+      "approx_price_atol": 1.5
+    },
+    {
+      "name": "otm_call_weekly",
+      "flag": "c",
+      "F": 22000.0,
+      "K": 22500.0,
+      "t": 0.0191780821917808,
+      "r": 0.065,
+      "sigma": 0.18
+    },
+    {
+      "name": "itm_put_weekly",
+      "flag": "p",
+      "F": 22000.0,
+      "K": 22500.0,
+      "t": 0.0191780821917808,
+      "r": 0.065,
+      "sigma": 0.18
+    },
+    {
+      "name": "banknifty_atm_short",
+      "flag": "c",
+      "F": 48000.0,
+      "K": 48000.0,
+      "t": 0.0054794520547945,
+      "r": 0.065,
+      "sigma": 0.20,
+      "atm": true
+    }
+  ]
+}

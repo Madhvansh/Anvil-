@@ -1,0 +1,18 @@
+Both Zerodha and Groww ship **official, hosted MCP servers** now, and since you're on Max you can add them directly in the Claude web/desktop app as custom connectors — no local install, no Node, no API keys for the basic path.
+
+## Connecting them
+
+**Zerodha Kite** — Zerodha maintains the server at `zerodha/kite-mcp-server`, with a hosted endpoint that requires no installation or API keys:
+
+1. Go to Settings → Connectors → **Add custom connector**
+2. Name: `Kite`, URL: `https://mcp.kite.trade/mcp`
+3. Connect, then the first time you query it, it'll hand you a Kite login link (OAuth). Log in, return, done.
+
+It exposes tools for viewing holdings and positions, placing and managing orders including GTT orders, and accessing real-time and historical market data.
+
+**Groww** — official server, same custom-connector flow. Per Groww's own docs: open claude.ai/settings/connectors, click add custom connector, enter Name = GrowwMCP and URL = https://mcp.groww.in/mcp, then click Connect and authorise access to your Groww account. Two caveats worth knowing: the current version supports stocks and F&O (mutual funds, IPOs, and bonds are not yet included), and placing sell orders requires DDPI authorisation on your demat account.
+
+If you'd rather self-host (your own Kite Connect API key, full control, runs locally), both repos support a Claude Desktop config via `mcp-remote` — but for your use case the hosted connectors are strictly less hassle.
+
+**One real warning:** these aren't read-only. The order tools move actual money, and a loosely worded prompt *can* trigger a market order. Keep confirmations explicit, and for analysis-only sessions just don't ask it to trade. (Standard disclaimer — I'm not a financial advisor; none of this is investment advice.)
+

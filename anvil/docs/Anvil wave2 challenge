@@ -1,0 +1,247 @@
+# Anvil Wave 2 — A Structured Challenge
+
+*A red-team of the "ML Prediction Engine (Indices), Calibration-First" plan, written so that every objection maps to a concrete alteration. The goal is not to kill the wave — it is to re-aim it before it ships its third dark engine.*
+
+---
+
+## 0. How to read this document
+
+This is a challenge document, not a replacement plan. It is organized in three movements:
+
+1. **What Wave 2 gets right** — the parts to preserve verbatim, because they are genuinely good and rebuilding them would be waste.
+2. **The challenges** — each one states the objection, argues it in technical detail, and ends with **→ The alteration**: the specific change it implies.
+3. **What to build instead, and in what order** — the constructive half, with concrete targets, a data plan, and a re-sequenced wave map.
+
+A summary table at the end collapses every challenge into a single change-list you can act on directly.
+
+The spirit throughout: Wave 2 is the right *tool* (gradient-boosted trees, calibration, conformal, meta-labeling, a brutal validation gate) aimed at the *wrong target* (daily index direction) in the *wrong order* (before the data that makes any of it light up). Fix the target and the order, keep the tooling, and the same engineering effort produces a product that finally feels real.
+
+---
+
+## 1. What Wave 2 gets right (preserve these — do not rebuild)
+
+Before any objection, this needs saying plainly: the discipline in this plan is rare. Most retail quant projects never get within a mile of this rigor. The following are correct and should survive every revision.
+
+| Decision | Verdict | Why it's right |
+|---|---|---|
+| GBM (LightGBM) over deep nets | **Keep** | Tabular financial data favors gradient-boosted trees; LSTMs/Transformers are marginal-at-best and overfit-prone. The research behind this is sound. |
+| Zero-new-deps Phase A (pure-numpy logistic fallback) | **Keep** | Shipping the engine even with no new wheels is smart engineering and good risk management. |
+| Source-class firewall (`ml_*` never blends into `PUBLIC_CLASSES`/`TIP_PUBLIC_CLASSES`) | **Keep** | This is what keeps an unproven ML read from contaminating the honest curves. Non-negotiable. |
+| Reuse of the validation harness (CPCV, embargo, DSR, PBO, t≥3) | **Keep** | This is the moat. Apply it to the *new* targets unchanged. |
+| Structural leak-safety (single-day features via `AsOfContext`; the one rolling feature's window excludes day *d*) | **Keep** | Leakage is the thing that fakes high accuracy. This thinking is exactly right and must carry into the reframed targets. |
+| The honesty contract (calibrated probability only; `edge_verified` earned through DSR/PBO/t≥3; abstain rather than fabricate) | **Keep — it is the product** | Every challenge below *strengthens* this, never weakens it. |
+| `future_waves_of_upgrade.md` as a living backlog | **Keep** | Good discipline. Keep appending. |
+
+Hold onto all of the above. Everything that follows is about *where the engine points* and *what runs first*, not about tearing down the foundation.
+
+---
+
+## 2. The meta-diagnosis: the pattern that has to stop
+
+There is a pattern across all three plans (the original tips engine, the Phase 1 Revamp, and now Wave 2), and naming it is the single most useful thing this document can do.
+
+Every plan builds another **engine**. Every plan defers the **data**. The validation gate is — correctly — designed to surface *nothing* until real edge is proven on real history. So each wave ships a new, beautifully-architected component that has nothing to compute edge from, the gate honestly refuses to show anything, and the Tips tab stays blank. The owner opens the app, sees an empty room, and concludes the execution failed.
+
+The execution mostly did not fail. The *plan design* keeps building the part that refuses to lie while perpetually postponing the part that gives it something true to say. Wave 2's own risk section admits this in plain text: ~62 days cached → ~50 rows → "cannot clear n≥50 + DSR≥0.95 + PBO≤0.5… the ML cell stays headline_eligible=False." The plan is telling you, on page one, that it will ship dark.
+
+This document's central claim: **stop adding engines; add data and a useful surface.** Wave 2 as written is the third instance of the pattern. Re-aimed and re-sequenced, it becomes the wave that breaks it.
+
+---
+
+## 3. Challenge 1 — The target is wrong for who you are
+
+Wave 2 trains on `y = int(close[d+h] > close[d])`: binary, daily, up-or-down. You are a directional options **buyer**. Those two facts are in direct conflict, and the conflict is fatal in three compounding ways.
+
+**(a) It is the least achievable target in the discipline.** The plan itself cites the ceiling: ~53–57% honest out-of-sample, with anything higher being leakage. So this aims your scarcest resources — clean data and validation budget — at the one prediction where the realistic ceiling is lowest and the overfitting temptation is highest.
+
+**(b) It is nearly useless to a buyer even when it is right — and this is the part that rarely gets said.** A buyer loses money being *right on direction* constantly. Here is the math that proves it:
+
+When you buy an at-the-money option, your breakeven is roughly the strike plus the premium, and the premium is approximately the *straddle-implied move*. To profit, the realized move must **exceed the implied move**, in your direction, **before theta decays it**. But "the option is priced fairly" means *exactly* that implied move equals expected realized move. So buying premium is a bet that realized will beat implied — and structurally, on average, it does not: the **volatility risk premium is typically positive (implied > realized)**, which is precisely why selling premium is the crowded retail trade and buying it bleeds.
+
+A directional model that is 55% right on *sign* tells you nothing about whether the move will clear the implied move. On average it will not. Then subtract the bid-ask spread and STT, and a 55% sign signal is *dominated by costs* before it ever reaches your P&L. Direction sign is a seller's luxury and a buyer's trap.
+
+What a buyer actually needs is the **joint** picture — direction **and** magnitude **and** timing **and** the vol path — because the option only pays if the move clears the premium before decay eats it. Wave 2 predicts the single dimension that, alone, cannot tell you whether to buy.
+
+**(c) It is the most overfit-seductive target.** A high accuracy number on daily direction is the precise red flag your entire product exists to be the opposite of. Optimizing toward it courts the exact failure mode (multiple-testing, rule-recovery, leakage) that produces the "91% of F&O traders lose money" outcome.
+
+Three strikes on one target: least achievable, least useful, most dangerous.
+
+**→ The alteration.** Replace "predict daily index direction" as the wave's headline objective. Direction, if predicted at all, becomes a *last-priority, regime-conditioned, abstaining* signal — never the engine. The new primary targets are defined in Section 9.
+
+---
+
+## 4. Challenge 2 — The 50-row reality makes the entire headline stack inactive
+
+This is the most important technical objection, because it is quantitative and the plan cannot argue with it.
+
+On ~50 rows per underlying, **every headline capability the plan promises is inactive by the plan's own rules.** Walk the stack:
+
+**The model overfits structurally.** ~50 rows against ~15–20 features is roughly **3 rows per feature**. Gradient-boosted trees need hundreds to thousands of rows to avoid memorizing noise; even an L2 logistic is shaky at 3:1. Whatever fits will be overfit, and you will not be able to tell, because —
+
+**The gate's own verdict is unreliable at this n.** CPCV partitions the data into groups and tests combinations; with embargo ≥ horizon (5 days), each fold *loses* 5–10 rows. You are computing DSR and PBO on train/test splits of a dozen rows each. Those statistics are themselves high-variance at this sample size — the gate cannot reliably distinguish real edge from noise, which means even a *passing* verdict would not be trustworthy.
+
+**Calibration — the product's defining feature — degrades to the identity function.** `fit_best_calibrator` falls back to identity when n < ~30. With ~50 total rows and an OOS hold-out for calibration, the calibration set is ~10 points. Isotonic regression on 10 points is a 3-step staircase; Platt on 10 points is barely identifiable. So by the plan's own rule, on current data the "**calibrated probability**" — the one number you have promised to show — is just the **raw, uncalibrated model output**. The headline feature is switched off.
+
+**Conformal bands are noise.** Split-conformal computes the (1−α) nonconformity quantile from the calibration set. With ~10 points, that quantile is essentially "the max of ten numbers." The bands carry no real coverage guarantee at this n.
+
+**Meta-labeling is impossible, not merely optional.** It is a *second* model trained on the *first* model's errors. The first model has ~50 rows; its errors number ~20–25 cases. You cannot train a classifier on 20 cases. The plan correctly flags it optional — but that flag understates it: the whole edifice is data-starved three to four layers deep.
+
+Put it together. Until W3's data arrives, Phases A, B, and C ship a system that produces: **an uncalibrated raw probability, with noise bands, and no edge badge** — functionally indistinguishable from the RND baseline you *already have*, but with roughly ten new modules to maintain. You would be writing sophisticated ML infrastructure whose every distinguishing feature is dormant.
+
+This is the crux of "why not build it now." It is not a matter of taste. At 50 rows, the ML engine *cannot be different from the baseline*, by arithmetic.
+
+**→ The alteration.** Do not build the ML stack against current data. The data wave is not a *later* dependency of the ML wave — it is a *prerequisite* of it. Acquire history first (Section 10), then the same modules become live instead of dormant.
+
+---
+
+## 5. Challenge 3 — The sequence is backwards; data is the binding constraint
+
+Wave 2 places the ML engine before the data (W2 builds the engine, W3 acquires the multi-year history that "unlocks validated edge"). This is the third plan running to defer data, and it is the root cause of the empty-product problem in Section 2.
+
+The binding constraint on this entire project is not model sophistication. It is sample size. With 62 days you cannot validate anything; with 3–5 years your structural estimates become statistically reliable, your gate's n≥50 becomes n≥1000+, `edge_verified` can actually light up, and the headline feed can populate. Every other component you have already built — the RND, the GEX read, the IV-crush logic, the regime classifier, the calibration ledger — is **dormant for the same reason**: it has too little history to clear the gate. Data is the one input that converts all of it from scaffolding to live at once.
+
+There is a real counter-argument, and it deserves a fair hearing: building the harness now means it is *ready* when data lands, and Phase A is cheap (zero new deps). True. But the opportunity cost is the thing that has burned you three times — engineering hours spent on a dormant engine are hours not spent on the one input that lights up everything you already own. Readiness is not the bottleneck. Data is.
+
+**→ The alteration.** Promote the data acquisition to the *front* of the wave (it becomes the new Wave 2, or runs concurrently and *ahead of* any new ML work). The ML engine follows the data, not the reverse.
+
+---
+
+## 6. Challenge 4 — ML is miscast as "the prediction engine"
+
+The plan frames the GBM as "a genuinely state-of-the-art prediction engine." That overweights what ML does here.
+
+On these targets, with honest validation, gradient-boosted trees are a **meta-layer**, and their real jobs are narrow: decide **when to act versus abstain** (meta-labeling / the conformal threshold), **calibrate** a probability so "65%" means 65%, and **combine** several individually-weak structural signals into one ranked, sized read. ML does *not* manufacture edge the market structure does not contain — and on daily direction, the structure mostly does not contain it. The edge, where it exists, comes from *structural* sources (the volatility risk premium, the risk-neutral density, repeatable event behavior, regime persistence) that are largely statistical and closed-form, not learned.
+
+Framing ML as the engine inverts the architecture. The engine is **structural edge + calibration**. ML refines and gates. Build it in that role.
+
+**→ The alteration.** Redefine the ML layer's job in the plan text: it consumes *structural signals as features* and outputs a calibrated act/abstain decision plus a refined probability. It is the meta-labeling layer of a structural system, not a standalone direction oracle. (This is the López de Prado meta-labeling pattern applied correctly — primary signal structural, ML deciding whether to trust it.)
+
+---
+
+## 7. Challenge 5 — Abstention is buried as "optional" when it is the most valuable component
+
+Wave 2 puts `metalabel.py` in as "OPTIONAL/flagged… data-starved scaffolding," while making direction the headline. This is exactly backwards.
+
+Selective abstention (the conformal risk-coverage threshold τ) is the **most data-efficient and most valuable** capability in the whole design. You do not need a great model to abstain well — you only need to know *when* your weak model is confident. And for a buyer, the economics are decisive: "**take 15% of setups at 68%**" beats "take 100% at 54%" by an enormous margin, because the option premium math only works on the high-conviction tail. Trading less is how you buy accuracy; abstention is alpha.
+
+The plan has the priority inverted: direction is first-class, abstention is an afterthought. It should be the reverse. Abstention is the thing you do *most* of the time; direction is the thing you abstain *from*.
+
+**→ The alteration.** Promote selective abstention to a first-class, always-on component — the risk-coverage curve and τ are not optional polish, they are the core deliverable that converts any weak model into a usable high-conviction subset. The headline feed *is* the gated subset.
+
+---
+
+## 8. Challenge 6 — The product ships dark because nothing is shown until the gate clears
+
+This is the challenge that most directly addresses your disappointment. The current design surfaces *nothing* until a `(structure, regime)` cell clears the full headline gate. That is why the app reads as empty — and it is an unforced error, because **usefulness does not require proven edge.**
+
+Even today, with zero validated cells, the Tips tab could show, per underlying, something genuinely useful to a buyer:
+
+> *NIFTY 23,500 CE — implied move 1.2%, model-expected realized ~0.9% → option looks ~15% rich; P(touch) 38% in 5 sessions; regime = range-bound; premium-buying unfavorable here.*
+
+That is honest decision context. It requires no `edge_verified`. It is just *surfacing the structural reads you already compute* (VRP, touch probability, regime, IV-crush windows) as analytics, clearly separated from any "edge-proven" claim. The Phase 1 Revamp plan actually called for this — the "Watchlist — developing signals" panel — but it appears to have been built as a placeholder rather than a substantive surface.
+
+The fix is to make that analytics surface **rich** on day one, while keeping the "Edge-proven" headline feed honestly empty until validated. An empty headline must stop meaning an empty product.
+
+**→ The alteration.** Add a first-class analytics/decision-context surface to this wave (or the data wave). It shows the structural reads as honest context — never as gated tips — so the product is substantive *before* any cell clears the gate. This is the single change that most quickly makes Anvil feel like a product.
+
+---
+
+## 9. Challenge 7 — The label regresses from the tip framework you already built
+
+A subtle but important objection: `y = int(close[d+h] > close[d])` is a *raw academic sign label*. It ignores transaction costs, ignores the bid-ask spread, and has no mapping to any tradeable structure a buyer would actually hold.
+
+But you **already built better than this.** The Phase 1 Revamp's `tip_backtest` scores a *realized, tradeable outcome after costs* — target-before-stop-within-horizon, net of STT and slippage, via `paper/costs.py`. Wave 2's label is a step *backwards* from that: it reverts to gross sign when you already have machinery that scores net P&L on defined-risk structures.
+
+A fixed 5-day horizon compounds the problem: no buyer holds a fixed 5-day directional bet that maps to "sign of the 5-day return." If you buy a weekly, the relevant question is the *path* to expiry and whether it touches your target — which is a touch/structure question, not a sign question.
+
+**→ The alteration.** Define labels in terms of *tradeable, cost-aware outcomes* — reuse the `tip_backtest` resolution logic, not raw sign. For the touch target, the label is the touch event; for the VRP target, the label is the post-cost return of the premium position; for direction, if kept, the label is "did a defined-risk debit structure reach target-before-stop net of costs." Never gross sign.
+
+---
+
+## 10. Challenge 8 — The feature set is all state, no dynamics
+
+The feature row is built from `SignalContext` single-day accessors (IV rank, skew, GEX, PCR, max-pain distance, days-to-expiry, crush score) plus a regime one-hot. These are **state** snapshots. There are almost no **dynamics**: no ΔIV-rank, no ΔGEX, no OI velocity, no term-structure-slope changes, no realized-vol trajectory. The plan itself notes the rolling `iv_rank` is the *only* multi-day feature.
+
+Markets transition; predicting a transition usually needs the *rate of change*, not just the level. A model fed only static snapshots is handicapped at exactly the thing you want — anticipating a move — regardless of how good the model is.
+
+(There is a chicken-and-egg here: you cannot *add* features at 50 rows without making the overfitting in Section 4 worse. Which is one more reason the data wave comes first — dynamics features only become safe to add once there is history to fit them on.)
+
+**→ The alteration.** When the ML layer is built (post-data), include path/dynamics features — changes and velocities of the structural reads — not only single-day levels. Until then, do not add features to a 50-row model.
+
+---
+
+## 11. What to build instead — the reframed targets
+
+This is the constructive core. Replace "predict daily direction" with a small set of targets ranked by *(achievability × usefulness to a buyer)*. Each is more honest, more useful, and — critically — most are **more data-efficient** than a single daily direction label.
+
+**1. Probability of touch + expected-move calibration (highest priority).** "What is P(NIFTY tags strike K within horizon T), and is the option pricing that fairly?" This is the buyer's *actual* question, directly actionable for strike selection, and defensibly calibratable from the Breeden–Litzenberger risk-neutral density you **already compute** (`implied_dist.py`) plus a realized-vs-implied adjustment. Two decisive advantages: it is where a real, honest 65–70% calibrated number lives; and — this is the under-appreciated part — **every strike × every horizon × every day is a separately resolvable forecast**, so touch/no-touch generates *vastly* more labels per unit time than one direction label per horizon. The touch framing is not only more useful, it *partially solves the data problem* by multiplying your calibration sample. Double win.
+
+**2. Volatility risk premium / IV richness.** "Is this option cheap or expensive versus the realized vol that will likely show up?" Compute implied (ATM IV — you have it) versus a realized-vol forecast (GARCH via `arch`, or HAR-RV / EWMA to start). VRP = IV − E[RV]. The signal: the *rare* windows where VRP is low or negative (premium-buying favorable) versus the usual state where it is high (unfavorable). This is among the most documented edges in the literature (your Baltussen citation), it is mostly statistical (ML only refines it), and for a buyer it directly answers the most important question — *when is buying premium +EV at all*.
+
+**3. Event-conditioned IV-crush magnitude.** Build an events calendar (earnings, RBI, budget, weekly/monthly expiry). Measure historical IV behavior per event type — run-up, crush magnitude, post-event realized. Predict the crush; gate buying into it. Predicting crush magnitude is far more tractable than predicting direction, and the *abstention* it produces ("do not buy premium into this crush") is itself alpha.
+
+**4. Regime classification (trend / range / squeeze).** Whether directional buying makes sense *at all* is regime-dependent. An HMM (`hmmlearn`) or even rules over (realized vol, GEX sign, trend strength, IV term-structure) classify the state and calibrate transition probabilities. This is genuinely where GBM/HMM earns its keep, and it *routes* which other signals are trusted.
+
+**5. Direction — last, and only conditioned + abstaining.** If predicted at all: condition on regime, surface *only* on the gated subset where conformal abstention says you are confident, accept ~60–65% on ~15% coverage, and never let it be the headline.
+
+Underneath all five, the deliverable stays **calibration, not accuracy** — Brier score, the live reliability diagram, the risk-coverage curve. That spine is already built. Lean all the way into it. The ML layer (Section 6) then sits *on top* of targets 1–4, consuming them as features and deciding act/abstain.
+
+---
+
+## 12. The re-sequenced wave map
+
+A concrete reordering that breaks the pattern in Section 2:
+
+**Wave 2 (was W3) — DATA.** Acquire history, pandas-free, with `httpx` + `csv`. This is the wave that lights up everything you already own.
+
+| Data | Source | Unlocks |
+|---|---|---|
+| Multi-year NSE bhavcopy (NIFTY/BANKNIFTY) | NSE archives | Touch frequencies, VRP history, validation sample size |
+| BSE bhavcopy (SENSEX/BANKEX) | BSE archives | SENSEX support |
+| Equity cash OHLC (NIFTY-500) | Yahoo chart JSON / NSE | Realized-vol forecasts, future stock ML |
+| India VIX history | NSE | Regime gating, VRP context |
+| FII/DII + participant-OI history | NSE | Positioning signals |
+| Index constituents/weights + sector map | NSE | Cross-sectional → index aggregation |
+| Earnings/event calendar | seed CSV → nsepython/jugaad-data | Event-IV-crush target |
+
+**Wave 2.5 — ANALYTICS SURFACE.** Make the Tips tab substantive *now*: surface VRP, touch probability, regime, and IV-crush windows as honest decision context (Section 8), clearly separated from any edge-proven claim. No proven edge required. This is what makes the product stop feeling empty.
+
+**Wave 3 — STRUCTURAL TARGETS + CALIBRATION.** Build targets 1–4 (Section 11) as gated factors, validated through the *existing* harness, scored via the *existing* cost-aware tip resolution. As the data sample is now large, cells can actually clear the gate and `edge_verified` can light up.
+
+**Wave 4 — ML META-LAYER (the reframed engine).** Now build the GBM/meta-labeling, on real history, consuming the structural targets as features, with path/dynamics features included, outputting a calibrated act/abstain decision. This is where the Wave 2 modules belong — alive instead of dormant.
+
+**Wave 5+ — as the existing backlog (news/sentiment, AI research loop, ensemble/regime stacking, transparency UI, intraday).** Unchanged.
+
+---
+
+## 13. Smaller flags worth folding in
+
+**The LLM-via-CLI piece is polish, and slightly risky polish.** Shelling out to `claude -p` on the Max subscription for *explanation* (never prediction — and the plan correctly keeps it out of the prediction path) is fine for personal/dev use. But it is a ToS gray area for automated/programmatic use; it must never be load-bearing (the deterministic-narrator default is right); and the moment Anvil serves anyone but you, routing their requests through your personal subscription is both a ToS violation and unscalable. Given your disappointment is about *substance*, spending wave effort on a narration layer misallocates toward polish. De-prioritize it until the substance exists.
+
+**Verify Black-76 is actually live.** The Anvil README describes `greeks.py` as "Black-Scholes-Merton… on spot," but your own ADRs (0002, 0004) and the merged blueprint mandate **Black-76 on the futures price**, because Indian index options settle off futures. If the working base is still BSM-on-spot, that is a correctness bug that quietly poisons every Greek, every IV, and therefore every feature downstream — a five-minute check worth doing before building anything on top.
+
+**On "maximum monetization" — the shape matters more than the ambition.** In India this is not a pure product decision. SEBI's Research Analyst / Investment Adviser regulations govern *recommendations provided for consideration*, and making accuracy or return claims while unregistered is exactly what gets penalized — it is the same conduct behind the enforcement actions the product is positioned against. Selling *predictions/tips for a fee* to other users walks straight into RA/IA registration. But selling the *tooling* — the cross-broker consolidated Greeks book (which genuinely no retail tool offers), the risk cockpit, the calibration dashboard — as software/data, where you hand the user the instrument and do not tell them what to buy, is a far cleaner SaaS posture with very different regulatory exposure. Same code, different legal terrain. **Decide the shape before building toward the money**, because it changes the architecture.
+
+---
+
+## 14. Summary — every challenge as a change-list
+
+| # | Challenge | The alteration |
+|---|---|---|
+| 1 | Daily direction is the wrong target for a buyer (least achievable, least useful, most overfit-prone) | Drop direction as the headline objective; make it a last-priority, regime-conditioned, abstaining signal only |
+| 2 | At 50 rows, calibration/conformal/meta-label are all inactive by the plan's own rules — the ML engine cannot differ from the baseline | Do not build the ML stack against current data; treat the data wave as a prerequisite, not a successor |
+| 3 | Sequence is backwards; data is the binding constraint that lights up everything already built | Promote data acquisition to the front of the queue |
+| 4 | ML is miscast as "the engine" | Redefine ML as a meta-layer over structural signals (calibrate + combine + decide act/abstain) |
+| 5 | Abstention is buried as optional | Promote selective abstention (risk-coverage τ) to a first-class, always-on deliverable; the headline feed *is* the gated subset |
+| 6 | Product ships dark — nothing shown until the gate clears | Add a rich, honest analytics/decision-context surface that is useful before any edge is proven |
+| 7 | The label regresses to raw gross sign | Use cost-aware tradeable labels via the existing tip resolution, not gross sign |
+| 8 | Features are static state, no dynamics | Add path/velocity features when the ML layer is built post-data; not before |
+| — | Reframe the targets | Build touch-probability, VRP, event-IV-crush, and regime — in that priority — with calibration as the deliverable |
+| — | Re-sequence the waves | Data → Analytics surface → Structural targets → ML meta-layer |
+| — | LLM-CLI | De-prioritize; keep out of the prediction path; never load-bearing or multi-user |
+| — | Black-76 | Verify the live engine uses Black-76 on futures, not BSM on spot |
+| — | Monetization | Decide the shape (tooling/SaaS vs. advice) up front; tooling monetizes cleanly, selling predictions triggers SEBI registration |
+
+---
+
+*The one-line verdict: the validation spine and engine you have built are the hard 80%, and they are done well; the reason the product feels empty is a fixable target-and-sequencing problem, not a start-over problem. So do not build the ML engine next — build the data layer and the honest analytics surface, and aim ML (later) at touch / VRP / regime instead of direction.*

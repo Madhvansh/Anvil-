@@ -1,0 +1,8 @@
+# Build context is ./backend. Keep it lean; live source is bind-mounted at runtime.
+**/__pycache__/
+**/*.py[cod]
+**/*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/

@@ -1,0 +1,104 @@
+{
+  "generated_utc": "2026-06-22T05:37:32+00:00",
+  "forecasts": [
+    {
+      "underlying": "NIFTY",
+      "as_of_ist": "2026-06-22T11:07:33+05:30",
+      "spot": 24160.05,
+      "expiry": "2026-06-23",
+      "days_to_expiry": 1.18,
+      "atm_strike": 24150.0,
+      "atm_iv_pct": 13.77,
+      "atm_straddle": 151.5,
+      "expected_move": {
+        "from_atm_straddle": 128.8,
+        "from_iv_1sigma": 189.3,
+        "one_sigma_band": [
+          23970.7,
+          24349.4
+        ],
+        "band_pct": [
+          -0.78,
+          0.78
+        ]
+      },
+      "prob_touch_before_expiry": {
+        "up_24300": 0.386,
+        "down_24100": 0.709
+      },
+      "positioning": {
+        "pcr_oi": 1.159,
+        "call_wall_strike": 24200.0,
+        "put_wall_strike": 24100.0
+      },
+      "provenance": "upstox_live_rest",
+      "disclaimer": "Calibrated probabilities/ranges from live data. Analytics & education only \u2014 NOT investment advice. No order is ever placed."
+    },
+    {
+      "underlying": "BANKNIFTY",
+      "as_of_ist": "2026-06-22T11:07:33+05:30",
+      "spot": 57885.6,
+      "expiry": "2026-06-30",
+      "days_to_expiry": 8.18,
+      "atm_strike": 57900.0,
+      "atm_iv_pct": 13.26,
+      "atm_straddle": 922.65,
+      "expected_move": {
+        "from_atm_straddle": 784.3,
+        "from_iv_1sigma": 1148.8,
+        "one_sigma_band": [
+          56736.8,
+          59034.4
+        ],
+        "band_pct": [
+          -1.98,
+          1.98
+        ]
+      },
+      "prob_touch_before_expiry": {
+        "up_58500": 0.531,
+        "down_57500": 0.692
+      },
+      "positioning": {
+        "pcr_oi": 1.055,
+        "call_wall_strike": 60000.0,
+        "put_wall_strike": 54000.0
+      },
+      "provenance": "upstox_live_rest",
+      "disclaimer": "Calibrated probabilities/ranges from live data. Analytics & education only \u2014 NOT investment advice. No order is ever placed."
+    },
+    {
+      "underlying": "SENSEX",
+      "as_of_ist": "2026-06-22T11:07:34+05:30",
+      "spot": 77303.5,
+      "expiry": "2026-06-25",
+      "days_to_expiry": 3.18,
+      "atm_strike": 77300.0,
+      "atm_iv_pct": 13.99,
+      "atm_straddle": 806.45,
+      "expected_move": {
+        "from_atm_straddle": 685.5,
+        "from_iv_1sigma": 1010.2,
+        "one_sigma_band": [
+          76293.3,
+          78313.7
+        ],
+        "band_pct": [
+          -1.31,
+          1.31
+        ]
+      },
+      "prob_touch_before_expiry": {
+        "up_77600": 0.73,
+        "down_77200": 0.904
+      },
+      "positioning": {
+        "pcr_oi": 1.105,
+        "call_wall_strike": 80000.0,
+        "put_wall_strike": 77000.0
+      },
+      "provenance": "upstox_live_rest",
+      "disclaimer": "Calibrated probabilities/ranges from live data. Analytics & education only \u2014 NOT investment advice. No order is ever placed."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  backend-tests:
+    name: Anvil tests (Python 3.12 container)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image (Python 3.12)
+        run: docker build -t anvil:ci .
+
+      - name: Lint (ruff)
+        run: docker run --rm anvil:ci ruff check .
+
+      - name: Tests
+        run: docker run --rm anvil:ci pytest -q
+
+      - name: Offline demo smoke
+        run: docker run --rm anvil:ci python -m anvil.cli pull NIFTY --demo

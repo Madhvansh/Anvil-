@@ -1,0 +1,323 @@
+{
+  "generated": "2026-06-22T13:56:51+05:30",
+  "market_read": [
+    {
+      "underlying": "NIFTY",
+      "asset_class": "index",
+      "spot": 24130.05,
+      "expiry": "2026-06-23",
+      "days_to_expiry": 1.065,
+      "atm_iv": 0.13145,
+      "realized_vol": 0.12812838308637656,
+      "vrp_ratio": 0.9747309477852913,
+      "vrp_signal": "NEUTRAL",
+      "regime": "positive_gamma_mean_revert",
+      "net_gex": 14257676428874.9,
+      "pcr": 0.9326237499423347,
+      "expected_move": 171.3163577455521
+    },
+    {
+      "underlying": "BANKNIFTY",
+      "asset_class": "index",
+      "spot": 57891.95,
+      "expiry": "2026-06-30",
+      "days_to_expiry": 8.065,
+      "atm_iv": 0.128,
+      "realized_vol": 0.17299926040928515,
+      "vrp_ratio": 1.3515567219475402,
+      "vrp_signal": "BUY_VOL",
+      "regime": "negative_gamma_trend_amplify",
+      "net_gex": 801791814821.7384,
+      "pcr": 1.0513042625251268,
+      "expected_move": 1101.4803269810236
+    },
+    {
+      "underlying": "SENSEX",
+      "asset_class": "index",
+      "spot": 77207.48,
+      "expiry": "2026-06-25",
+      "days_to_expiry": 3.065,
+      "atm_iv": 0.13565,
+      "realized_vol": 0.1373906081369928,
+      "vrp_ratio": 1.0128316117728922,
+      "vrp_signal": "NEUTRAL",
+      "regime": "positive_gamma_mean_revert",
+      "net_gex": 801412854277.1621,
+      "pcr": 0.8850238358461914,
+      "expected_move": 959.6849449802162
+    },
+    {
+      "underlying": "RELIANCE",
+      "asset_class": "stock",
+      "spot": 1332.2,
+      "expiry": "2026-06-30",
+      "days_to_expiry": 8.065,
+      "atm_iv": 0.2283,
+      "realized_vol": 0.18244160127278589,
+      "vrp_ratio": 0.7991309735995877,
+      "vrp_signal": "SELL_VOL",
+      "regime": "positive_gamma_mean_revert",
+      "net_gex": 2505595051373.8516,
+      "pcr": 0.5100030244584484,
+      "expected_move": 45.20886561553524
+    },
+    {
+      "underlying": "HDFCBANK",
+      "asset_class": "stock",
+      "spot": 789.0,
+      "expiry": "2026-06-30",
+      "days_to_expiry": 8.065,
+      "atm_iv": 0.20875,
+      "realized_vol": 0.24930585233754643,
+      "vrp_ratio": 1.194279532155911,
+      "vrp_signal": "BUY_VOL",
+      "regime": "negative_gamma_trend_amplify",
+      "net_gex": 1318694025150.3147,
+      "pcr": 0.6745005564093053,
+      "expected_move": 24.48226564145409
+    },
+    {
+      "underlying": "ICICIBANK",
+      "asset_class": "stock",
+      "spot": 1354.4,
+      "expiry": "2026-06-30",
+      "days_to_expiry": 8.065,
+      "atm_iv": 0.1648,
+      "realized_vol": 0.19283925433097435,
+      "vrp_ratio": 1.1701411063772715,
+      "vrp_signal": "BUY_VOL",
+      "regime": "negative_gamma_trend_amplify",
+      "net_gex": 809729650815.008,
+      "pcr": 0.9029001661443984,
+      "expected_move": 33.178147174311945
+    },
+    {
+      "underlying": "INFY",
+      "asset_class": "stock",
+      "spot": 1067.0,
+      "expiry": "2026-06-30",
+      "days_to_expiry": 8.065,
+      "atm_iv": 0.27225,
+      "realized_vol": 0.41834707896470574,
+      "vrp_ratio": 1.5366283892183865,
+      "vrp_signal": "BUY_VOL",
+      "regime": "negative_gamma_trend_amplify",
+      "net_gex": 346342197826.23987,
+      "pcr": 0.508970042515544,
+      "expected_move": 43.17975187331145
+    },
+    {
+      "underlying": "TCS",
+      "asset_class": "stock",
+      "spot": 2132.0,
+      "expiry": "2026-06-30",
+      "days_to_expiry": 8.065,
+      "atm_iv": 0.2484,
+      "realized_vol": 0.4364756463086971,
+      "vrp_ratio": 1.7571483345760752,
+      "vrp_signal": "BUY_VOL",
+      "regime": "negative_gamma_trend_amplify",
+      "net_gex": 182066211165.92993,
+      "pcr": 0.5151052881709958,
+      "expected_move": 78.72025767103892
+    },
+    {
+      "underlying": "SBIN",
+      "asset_class": "stock",
+      "spot": 1038.15,
+      "expiry": "2026-06-30",
+      "days_to_expiry": 8.065,
+      "atm_iv": 0.20934999999999998,
+      "realized_vol": 0.15163226059117138,
+      "vrp_ratio": 0.7243002655417788,
+      "vrp_signal": "SELL_VOL",
+      "regime": "positive_gamma_mean_revert",
+      "net_gex": 1085974317992.2712,
+      "pcr": 0.7563321304555048,
+      "expected_move": 32.305812191876235
+    },
+    {
+      "underlying": "BHARTIARTL",
+      "asset_class": "stock",
+      "spot": 1921.1,
+      "expiry": "2026-06-30",
+      "days_to_expiry": 8.065,
+      "atm_iv": 0.1697,
+      "realized_vol": 0.17073088026170286,
+      "vrp_ratio": 1.006074721636434,
+      "vrp_signal": "NEUTRAL",
+      "regime": "positive_gamma_mean_revert",
+      "net_gex": 862753522519.2106,
+      "pcr": 0.5863954329822304,
+      "expected_move": 48.45954046572326
+    },
+    {
+      "underlying": "LT",
+      "asset_class": "stock",
+      "spot": 4206.3,
+      "expiry": "2026-06-30",
+      "days_to_expiry": 8.065,
+      "atm_iv": 0.2075,
+      "realized_vol": 0.255760354163379,
+      "vrp_ratio": 1.2325800200644772,
+      "vrp_signal": "BUY_VOL",
+      "regime": "negative_gamma_trend_amplify",
+      "net_gex": 194308462323.10324,
+      "pcr": 0.6851136937847397,
+      "expected_move": 129.73755354438333
+    },
+    {
+      "underlying": "AXISBANK",
+      "asset_class": "stock",
+      "spot": 1359.0,
+      "expiry": "2026-06-30",
+      "days_to_expiry": 8.065,
+      "atm_iv": 0.1886,
+      "realized_vol": 0.2150866120913618,
+      "vrp_ratio": 1.1404380280560011,
+      "vrp_signal": "BUY_VOL",
+      "regime": "negative_gamma_trend_amplify",
+      "net_gex": 845844804798.0469,
+      "pcr": 0.6942472398372956,
+      "expected_move": 38.09854526463024
+    },
+    {
+      "underlying": "MARUTI",
+      "asset_class": "stock",
+      "spot": 13476.0,
+      "expiry": "2026-06-30",
+      "days_to_expiry": 8.065,
+      "atm_iv": 0.21925,
+      "realized_vol": 0.19879099026332528,
+      "vrp_ratio": 0.9066863866058166,
+      "vrp_signal": "NEUTRAL",
+      "regime": "positive_gamma_mean_revert",
+      "net_gex": 89869666785.12,
+      "pcr": 0.4363923405989,
+      "expected_move": 439.18523822684205
+    }
+  ],
+  "tip_sheet": [
+    {
+      "rank": 1,
+      "status": "WATCH",
+      "underlying": "SBIN",
+      "asset_class": "stock",
+      "strategy": "iron_condor",
+      "direction": "NEUTRAL",
+      "pop": 0.8519,
+      "ev_on_risk": 0.1005,
+      "ev_net_position": 1217.08,
+      "max_loss_position": 12112.5,
+      "units": 1,
+      "legs": [
+        {
+          "side": "SELL",
+          "option_type": "CE",
+          "strike": 1070.0,
+          "entry_fill": 3.15,
+          "mid": 3.17,
+          "bid": 3.15,
+          "ask": 3.2,
+          "oi": 1275750.0
+        },
+        {
+          "side": "BUY",
+          "option_type": "CE",
+          "strike": 1090.0,
+          "entry_fill": 1.3,
+          "mid": 1.27,
+          "bid": 1.25,
+          "ask": 1.3,
+          "oi": 900000.0
+        },
+        {
+          "side": "SELL",
+          "option_type": "PE",
+          "strike": 1010.0,
+          "entry_fill": 3.6,
+          "mid": 3.65,
+          "bid": 3.6,
+          "ask": 3.7,
+          "oi": 1757250.0
+        },
+        {
+          "side": "BUY",
+          "option_type": "PE",
+          "strike": 990.0,
+          "entry_fill": 1.6,
+          "mid": 1.58,
+          "bid": 1.55,
+          "ask": 1.6,
+          "oi": 1724250.0
+        }
+      ],
+      "breakevens": [
+        1006.15,
+        1073.85
+      ],
+      "rationale": "Pinning/rich-IV regime: sell the \u00b11\u03c3 wings (1010/1070) as a defined-risk condor; harvest premium while spot stays in [1006,1074]."
+    },
+    {
+      "rank": 2,
+      "status": "WATCH",
+      "underlying": "RELIANCE",
+      "asset_class": "stock",
+      "strategy": "call_credit_spread",
+      "direction": "BEARISH",
+      "pop": 0.7502,
+      "ev_on_risk": 0.0541,
+      "ev_net_position": 393.78,
+      "max_loss_position": 7275.0,
+      "units": 1,
+      "legs": [
+        {
+          "side": "SELL",
+          "option_type": "CE",
+          "strike": 1350.0,
+          "entry_fill": 12.05,
+          "mid": 12.07,
+          "bid": 12.05,
+          "ask": 12.1,
+          "oi": 15393000.0
+        },
+        {
+          "side": "BUY",
+          "option_type": "CE",
+          "strike": 1370.0,
+          "entry_fill": 6.6,
+          "mid": 6.55,
+          "bid": 6.5,
+          "ask": 6.6,
+          "oi": 3804000.0
+        }
+      ],
+      "breakevens": [
+        1355.45
+      ],
+      "rationale": "Bearish lean + resistance: sell the 1350 call spread (be 1355)."
+    }
+  ],
+  "scorecard": {
+    "generated": "2026-06-22T13:56:51+05:30",
+    "totals": {
+      "tips_logged": 67,
+      "resolved_trades": 0,
+      "open_trades": 2,
+      "abstained": 65
+    },
+    "overall": {
+      "n": 0
+    },
+    "by_strategy": {},
+    "by_regime": {},
+    "edge_status": {},
+    "benchmark": {
+      "do_nothing_cash_inr": 0.0,
+      "note": "Cash earns 0 here; 'edge' must be POSITIVE net P&L above this AND above the v1 directional baseline (see directional report)."
+    },
+    "tail_warning": null,
+    "disclaimer": "Anvil Live v2 ranks option-structure trade IDEAS from live market data to study which approach earns the most, net of realistic India F&O costs. ANALYTICS & EDUCATION ONLY \u2014 NOT investment advice, NOT a buy/sell/target recommendation, NO guaranteed profit. Premium-selling carries TAIL RISK: it wins often and small, then can lose big on a gap \u2014 the scorecard tracks max drawdown / worst day / MAE so that risk is never hidden. Read-only: no order is ever placed. In India, paid securities advice can require SEBI Research-Analyst registration \u2014 keep this in the analytics/education lane."
+  },
+  "disclaimer": "Anvil Live v2 ranks option-structure trade IDEAS from live market data to study which approach earns the most, net of realistic India F&O costs. ANALYTICS & EDUCATION ONLY \u2014 NOT investment advice, NOT a buy/sell/target recommendation, NO guaranteed profit. Premium-selling carries TAIL RISK: it wins often and small, then can lose big on a gap \u2014 the scorecard tracks max drawdown / worst day / MAE so that risk is never hidden. Read-only: no order is ever placed. In India, paid securities advice can require SEBI Research-Analyst registration \u2014 keep this in the analytics/education lane."
+}

@@ -1,0 +1,19 @@
+# Caddy reverse proxy with automatic HTTPS.
+# Set ANVIL_DOMAIN in .env to a real hostname (e.g. anvil.example.com or a free DuckDNS name)
+# pointed at this host's public IP — Caddy then provisions a Let's Encrypt cert automatically.
+# With the default "localhost", Caddy uses its own internal CA (self-signed) for local testing.
+#
+# The app has its own login (M2), so the instance is already behind auth. For an extra coarse
+# gate on a public URL, uncomment the basicauth block and set ANVIL_BASIC_USER/ANVIL_BASIC_HASH
+# (generate the hash with: docker run --rm caddy:2-alpine caddy hash-password --plaintext 'yourpass').
+
+{$ANVIL_DOMAIN:localhost} {
+	encode zstd gzip
+
+	# Optional coarse gate (defense-in-depth on top of the app login):
+	# basicauth {
+	# 	{$ANVIL_BASIC_USER:anvil} {$ANVIL_BASIC_HASH}
+	# }
+
+	reverse_proxy anvil:8000
+}

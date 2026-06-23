@@ -1,0 +1,973 @@
+{
+  "generated": "2026-06-22T10:52:22+05:30",
+  "universe": {
+    "indices": [
+      "NIFTY",
+      "BANKNIFTY",
+      "SENSEX"
+    ],
+    "stocks": [
+      "RELIANCE",
+      "HDFCBANK",
+      "ICICIBANK",
+      "INFY",
+      "TCS",
+      "SBIN",
+      "BHARTIARTL",
+      "ITC",
+      "LT",
+      "AXISBANK",
+      "KOTAKBANK",
+      "HINDUNILVR",
+      "BAJFINANCE",
+      "MARUTI",
+      "SUNPHARMA",
+      "TATAMOTORS",
+      "WIPRO",
+      "ONGC",
+      "NTPC",
+      "TATASTEEL"
+    ],
+    "horizon": "next_day (next session close)"
+  },
+  "overall": {
+    "label": "ALL (full history, out-of-sample for fixed-prior model)",
+    "n_directional": 8774,
+    "n_abstain": 884,
+    "hit_rate": 0.4922,
+    "brier": 0.2706,
+    "win_rate": 0.4576,
+    "expectancy_pct": -0.0888,
+    "compounded_return_pct": -99.98,
+    "reliability_curve": [
+      {
+        "bucket": "50-55%",
+        "n": 226,
+        "stated": 0.545,
+        "actual": 0.496
+      },
+      {
+        "bucket": "55-60%",
+        "n": 1214,
+        "stated": 0.575,
+        "actual": 0.481
+      },
+      {
+        "bucket": "60-65%",
+        "n": 1468,
+        "stated": 0.625,
+        "actual": 0.492
+      },
+      {
+        "bucket": "65-100%",
+        "n": 5866,
+        "stated": 0.65,
+        "actual": 0.495
+      }
+    ]
+  },
+  "overall_indices": {
+    "label": "indices",
+    "n_directional": 1226,
+    "n_abstain": 91,
+    "hit_rate": 0.4967,
+    "brier": 0.27,
+    "win_rate": 0.447,
+    "expectancy_pct": -0.092,
+    "compounded_return_pct": -69.21,
+    "reliability_curve": [
+      {
+        "bucket": "50-55%",
+        "n": 29,
+        "stated": 0.545,
+        "actual": 0.552
+      },
+      {
+        "bucket": "55-60%",
+        "n": 153,
+        "stated": 0.576,
+        "actual": 0.516
+      },
+      {
+        "bucket": "60-65%",
+        "n": 194,
+        "stated": 0.626,
+        "actual": 0.433
+      },
+      {
+        "bucket": "65-100%",
+        "n": 850,
+        "stated": 0.65,
+        "actual": 0.506
+      }
+    ]
+  },
+  "overall_stocks": {
+    "label": "stocks",
+    "n_directional": 7548,
+    "n_abstain": 793,
+    "hit_rate": 0.4915,
+    "brier": 0.2706,
+    "win_rate": 0.4593,
+    "expectancy_pct": -0.0883,
+    "compounded_return_pct": -99.94,
+    "reliability_curve": [
+      {
+        "bucket": "50-55%",
+        "n": 197,
+        "stated": 0.545,
+        "actual": 0.487
+      },
+      {
+        "bucket": "55-60%",
+        "n": 1061,
+        "stated": 0.575,
+        "actual": 0.476
+      },
+      {
+        "bucket": "60-65%",
+        "n": 1274,
+        "stated": 0.625,
+        "actual": 0.501
+      },
+      {
+        "bucket": "65-100%",
+        "n": 5016,
+        "stated": 0.65,
+        "actual": 0.493
+      }
+    ]
+  },
+  "recent_holdout": {
+    "label": "recent 30% hold-out",
+    "n_directional": 2633,
+    "n_abstain": 0,
+    "hit_rate": 0.4896,
+    "brier": 0.2722,
+    "win_rate": 0.4558,
+    "expectancy_pct": -0.074,
+    "compounded_return_pct": -89.98,
+    "reliability_curve": [
+      {
+        "bucket": "50-55%",
+        "n": 75,
+        "stated": 0.545,
+        "actual": 0.493
+      },
+      {
+        "bucket": "55-60%",
+        "n": 318,
+        "stated": 0.575,
+        "actual": 0.525
+      },
+      {
+        "bucket": "60-65%",
+        "n": 450,
+        "stated": 0.626,
+        "actual": 0.464
+      },
+      {
+        "bucket": "65-100%",
+        "n": 1790,
+        "stated": 0.65,
+        "actual": 0.489
+      }
+    ]
+  },
+  "per_symbol": {
+    "NIFTY": {
+      "label": "NIFTY",
+      "n_directional": 416,
+      "n_abstain": 23,
+      "hit_rate": 0.5072,
+      "brier": 0.2666,
+      "win_rate": 0.4399,
+      "expectancy_pct": -0.1054,
+      "compounded_return_pct": -36.44,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 11,
+          "stated": 0.544,
+          "actual": 0.545
+        },
+        {
+          "bucket": "55-60%",
+          "n": 48,
+          "stated": 0.576,
+          "actual": 0.479
+        },
+        {
+          "bucket": "60-65%",
+          "n": 70,
+          "stated": 0.626,
+          "actual": 0.457
+        },
+        {
+          "bucket": "65-100%",
+          "n": 287,
+          "stated": 0.65,
+          "actual": 0.523
+        }
+      ]
+    },
+    "BANKNIFTY": {
+      "label": "BANKNIFTY",
+      "n_directional": 400,
+      "n_abstain": 39,
+      "hit_rate": 0.475,
+      "brier": 0.2761,
+      "win_rate": 0.4475,
+      "expectancy_pct": -0.097,
+      "compounded_return_pct": -33.57,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 8,
+          "stated": 0.546,
+          "actual": 0.625
+        },
+        {
+          "bucket": "55-60%",
+          "n": 56,
+          "stated": 0.576,
+          "actual": 0.518
+        },
+        {
+          "bucket": "60-65%",
+          "n": 60,
+          "stated": 0.623,
+          "actual": 0.383
+        },
+        {
+          "bucket": "65-100%",
+          "n": 276,
+          "stated": 0.65,
+          "actual": 0.482
+        }
+      ]
+    },
+    "SENSEX": {
+      "label": "SENSEX",
+      "n_directional": 410,
+      "n_abstain": 29,
+      "hit_rate": 0.5073,
+      "brier": 0.2676,
+      "win_rate": 0.4537,
+      "expectancy_pct": -0.0735,
+      "compounded_return_pct": -27.07,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 10,
+          "stated": 0.545,
+          "actual": 0.5
+        },
+        {
+          "bucket": "55-60%",
+          "n": 49,
+          "stated": 0.575,
+          "actual": 0.551
+        },
+        {
+          "bucket": "60-65%",
+          "n": 64,
+          "stated": 0.628,
+          "actual": 0.453
+        },
+        {
+          "bucket": "65-100%",
+          "n": 287,
+          "stated": 0.65,
+          "actual": 0.512
+        }
+      ]
+    },
+    "RELIANCE": {
+      "label": "RELIANCE",
+      "n_directional": 397,
+      "n_abstain": 42,
+      "hit_rate": 0.4761,
+      "brier": 0.2749,
+      "win_rate": 0.4509,
+      "expectancy_pct": -0.0802,
+      "compounded_return_pct": -29.99,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 8,
+          "stated": 0.545,
+          "actual": 0.625
+        },
+        {
+          "bucket": "55-60%",
+          "n": 54,
+          "stated": 0.577,
+          "actual": 0.389
+        },
+        {
+          "bucket": "60-65%",
+          "n": 62,
+          "stated": 0.627,
+          "actual": 0.516
+        },
+        {
+          "bucket": "65-100%",
+          "n": 273,
+          "stated": 0.65,
+          "actual": 0.48
+        }
+      ]
+    },
+    "HDFCBANK": {
+      "label": "HDFCBANK",
+      "n_directional": 392,
+      "n_abstain": 47,
+      "hit_rate": 0.4974,
+      "brier": 0.2677,
+      "win_rate": 0.4541,
+      "expectancy_pct": -0.1466,
+      "compounded_return_pct": -45.45,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 12,
+          "stated": 0.543,
+          "actual": 0.417
+        },
+        {
+          "bucket": "55-60%",
+          "n": 65,
+          "stated": 0.574,
+          "actual": 0.554
+        },
+        {
+          "bucket": "60-65%",
+          "n": 77,
+          "stated": 0.624,
+          "actual": 0.455
+        },
+        {
+          "bucket": "65-100%",
+          "n": 238,
+          "stated": 0.65,
+          "actual": 0.5
+        }
+      ]
+    },
+    "ICICIBANK": {
+      "label": "ICICIBANK",
+      "n_directional": 392,
+      "n_abstain": 47,
+      "hit_rate": 0.4923,
+      "brier": 0.2717,
+      "win_rate": 0.4566,
+      "expectancy_pct": -0.1139,
+      "compounded_return_pct": -37.79,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 7,
+          "stated": 0.547,
+          "actual": 0.571
+        },
+        {
+          "bucket": "55-60%",
+          "n": 51,
+          "stated": 0.577,
+          "actual": 0.49
+        },
+        {
+          "bucket": "60-65%",
+          "n": 75,
+          "stated": 0.627,
+          "actual": 0.493
+        },
+        {
+          "bucket": "65-100%",
+          "n": 259,
+          "stated": 0.65,
+          "actual": 0.49
+        }
+      ]
+    },
+    "INFY": {
+      "label": "INFY",
+      "n_directional": 410,
+      "n_abstain": 29,
+      "hit_rate": 0.4732,
+      "brier": 0.2758,
+      "win_rate": 0.4415,
+      "expectancy_pct": -0.1252,
+      "compounded_return_pct": -43.73,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 10,
+          "stated": 0.545,
+          "actual": 0.6
+        },
+        {
+          "bucket": "55-60%",
+          "n": 59,
+          "stated": 0.576,
+          "actual": 0.475
+        },
+        {
+          "bucket": "60-65%",
+          "n": 96,
+          "stated": 0.623,
+          "actual": 0.479
+        },
+        {
+          "bucket": "65-100%",
+          "n": 245,
+          "stated": 0.65,
+          "actual": 0.465
+        }
+      ]
+    },
+    "TCS": {
+      "label": "TCS",
+      "n_directional": 401,
+      "n_abstain": 38,
+      "hit_rate": 0.5262,
+      "brier": 0.2627,
+      "win_rate": 0.4938,
+      "expectancy_pct": -0.0537,
+      "compounded_return_pct": -22.83,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 7,
+          "stated": 0.546,
+          "actual": 0.429
+        },
+        {
+          "bucket": "55-60%",
+          "n": 44,
+          "stated": 0.575,
+          "actual": 0.545
+        },
+        {
+          "bucket": "60-65%",
+          "n": 64,
+          "stated": 0.622,
+          "actual": 0.562
+        },
+        {
+          "bucket": "65-100%",
+          "n": 286,
+          "stated": 0.65,
+          "actual": 0.517
+        }
+      ]
+    },
+    "SBIN": {
+      "label": "SBIN",
+      "n_directional": 408,
+      "n_abstain": 31,
+      "hit_rate": 0.5049,
+      "brier": 0.2669,
+      "win_rate": 0.473,
+      "expectancy_pct": -0.0858,
+      "compounded_return_pct": -32.49,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 10,
+          "stated": 0.545,
+          "actual": 0.2
+        },
+        {
+          "bucket": "55-60%",
+          "n": 50,
+          "stated": 0.573,
+          "actual": 0.54
+        },
+        {
+          "bucket": "60-65%",
+          "n": 68,
+          "stated": 0.626,
+          "actual": 0.5
+        },
+        {
+          "bucket": "65-100%",
+          "n": 280,
+          "stated": 0.65,
+          "actual": 0.511
+        }
+      ]
+    },
+    "BHARTIARTL": {
+      "label": "BHARTIARTL",
+      "n_directional": 384,
+      "n_abstain": 55,
+      "hit_rate": 0.4635,
+      "brier": 0.2761,
+      "win_rate": 0.4271,
+      "expectancy_pct": -0.156,
+      "compounded_return_pct": -46.82,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 14,
+          "stated": 0.544,
+          "actual": 0.571
+        },
+        {
+          "bucket": "55-60%",
+          "n": 59,
+          "stated": 0.576,
+          "actual": 0.424
+        },
+        {
+          "bucket": "60-65%",
+          "n": 67,
+          "stated": 0.627,
+          "actual": 0.358
+        },
+        {
+          "bucket": "65-100%",
+          "n": 244,
+          "stated": 0.65,
+          "actual": 0.496
+        }
+      ]
+    },
+    "ITC": {
+      "label": "ITC",
+      "n_directional": 398,
+      "n_abstain": 41,
+      "hit_rate": 0.4799,
+      "brier": 0.2743,
+      "win_rate": 0.4472,
+      "expectancy_pct": -0.0851,
+      "compounded_return_pct": -30.93,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 12,
+          "stated": 0.545,
+          "actual": 0.583
+        },
+        {
+          "bucket": "55-60%",
+          "n": 55,
+          "stated": 0.576,
+          "actual": 0.4
+        },
+        {
+          "bucket": "60-65%",
+          "n": 64,
+          "stated": 0.624,
+          "actual": 0.562
+        },
+        {
+          "bucket": "65-100%",
+          "n": 267,
+          "stated": 0.65,
+          "actual": 0.472
+        }
+      ]
+    },
+    "LT": {
+      "label": "LT",
+      "n_directional": 409,
+      "n_abstain": 30,
+      "hit_rate": 0.5281,
+      "brier": 0.2609,
+      "win_rate": 0.4743,
+      "expectancy_pct": -0.0419,
+      "compounded_return_pct": -20.3,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 12,
+          "stated": 0.545,
+          "actual": 0.5
+        },
+        {
+          "bucket": "55-60%",
+          "n": 52,
+          "stated": 0.576,
+          "actual": 0.481
+        },
+        {
+          "bucket": "60-65%",
+          "n": 60,
+          "stated": 0.623,
+          "actual": 0.617
+        },
+        {
+          "bucket": "65-100%",
+          "n": 285,
+          "stated": 0.65,
+          "actual": 0.519
+        }
+      ]
+    },
+    "AXISBANK": {
+      "label": "AXISBANK",
+      "n_directional": 393,
+      "n_abstain": 46,
+      "hit_rate": 0.4784,
+      "brier": 0.2722,
+      "win_rate": 0.4529,
+      "expectancy_pct": -0.0689,
+      "compounded_return_pct": -27.0,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 13,
+          "stated": 0.544,
+          "actual": 0.615
+        },
+        {
+          "bucket": "55-60%",
+          "n": 50,
+          "stated": 0.574,
+          "actual": 0.34
+        },
+        {
+          "bucket": "60-65%",
+          "n": 73,
+          "stated": 0.627,
+          "actual": 0.438
+        },
+        {
+          "bucket": "65-100%",
+          "n": 257,
+          "stated": 0.65,
+          "actual": 0.51
+        }
+      ]
+    },
+    "KOTAKBANK": {
+      "label": "KOTAKBANK",
+      "n_directional": 407,
+      "n_abstain": 32,
+      "hit_rate": 0.484,
+      "brier": 0.2743,
+      "win_rate": 0.4521,
+      "expectancy_pct": -0.1272,
+      "compounded_return_pct": -42.78,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 10,
+          "stated": 0.545,
+          "actual": 0.4
+        },
+        {
+          "bucket": "55-60%",
+          "n": 70,
+          "stated": 0.574,
+          "actual": 0.557
+        },
+        {
+          "bucket": "60-65%",
+          "n": 63,
+          "stated": 0.626,
+          "actual": 0.54
+        },
+        {
+          "bucket": "65-100%",
+          "n": 264,
+          "stated": 0.65,
+          "actual": 0.455
+        }
+      ]
+    },
+    "HINDUNILVR": {
+      "label": "HINDUNILVR",
+      "n_directional": 394,
+      "n_abstain": 45,
+      "hit_rate": 0.5228,
+      "brier": 0.2625,
+      "win_rate": 0.4975,
+      "expectancy_pct": -0.045,
+      "compounded_return_pct": -18.93,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 8,
+          "stated": 0.545,
+          "actual": 0.75
+        },
+        {
+          "bucket": "55-60%",
+          "n": 58,
+          "stated": 0.576,
+          "actual": 0.466
+        },
+        {
+          "bucket": "60-65%",
+          "n": 52,
+          "stated": 0.628,
+          "actual": 0.558
+        },
+        {
+          "bucket": "65-100%",
+          "n": 276,
+          "stated": 0.65,
+          "actual": 0.522
+        }
+      ]
+    },
+    "BAJFINANCE": {
+      "label": "BAJFINANCE",
+      "n_directional": 405,
+      "n_abstain": 34,
+      "hit_rate": 0.4963,
+      "brier": 0.2704,
+      "win_rate": 0.4617,
+      "expectancy_pct": -0.1306,
+      "compounded_return_pct": -44.73,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 11,
+          "stated": 0.546,
+          "actual": 0.364
+        },
+        {
+          "bucket": "55-60%",
+          "n": 54,
+          "stated": 0.577,
+          "actual": 0.556
+        },
+        {
+          "bucket": "60-65%",
+          "n": 74,
+          "stated": 0.626,
+          "actual": 0.473
+        },
+        {
+          "bucket": "65-100%",
+          "n": 266,
+          "stated": 0.65,
+          "actual": 0.496
+        }
+      ]
+    },
+    "MARUTI": {
+      "label": "MARUTI",
+      "n_directional": 393,
+      "n_abstain": 46,
+      "hit_rate": 0.4758,
+      "brier": 0.2736,
+      "win_rate": 0.4529,
+      "expectancy_pct": -0.0072,
+      "compounded_return_pct": -6.59,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 11,
+          "stated": 0.546,
+          "actual": 0.455
+        },
+        {
+          "bucket": "55-60%",
+          "n": 65,
+          "stated": 0.575,
+          "actual": 0.446
+        },
+        {
+          "bucket": "60-65%",
+          "n": 70,
+          "stated": 0.626,
+          "actual": 0.486
+        },
+        {
+          "bucket": "65-100%",
+          "n": 247,
+          "stated": 0.65,
+          "actual": 0.482
+        }
+      ]
+    },
+    "SUNPHARMA": {
+      "label": "SUNPHARMA",
+      "n_directional": 398,
+      "n_abstain": 41,
+      "hit_rate": 0.5101,
+      "brier": 0.2655,
+      "win_rate": 0.4799,
+      "expectancy_pct": -0.0704,
+      "compounded_return_pct": -26.9,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 12,
+          "stated": 0.545,
+          "actual": 0.5
+        },
+        {
+          "bucket": "55-60%",
+          "n": 58,
+          "stated": 0.575,
+          "actual": 0.466
+        },
+        {
+          "bucket": "60-65%",
+          "n": 61,
+          "stated": 0.624,
+          "actual": 0.574
+        },
+        {
+          "bucket": "65-100%",
+          "n": 267,
+          "stated": 0.65,
+          "actual": 0.506
+        }
+      ]
+    },
+    "WIPRO": {
+      "label": "WIPRO",
+      "n_directional": 394,
+      "n_abstain": 45,
+      "hit_rate": 0.4848,
+      "brier": 0.2711,
+      "win_rate": 0.4416,
+      "expectancy_pct": -0.0866,
+      "compounded_return_pct": -32.79,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 13,
+          "stated": 0.546,
+          "actual": 0.385
+        },
+        {
+          "bucket": "55-60%",
+          "n": 54,
+          "stated": 0.571,
+          "actual": 0.426
+        },
+        {
+          "bucket": "60-65%",
+          "n": 67,
+          "stated": 0.628,
+          "actual": 0.537
+        },
+        {
+          "bucket": "65-100%",
+          "n": 260,
+          "stated": 0.65,
+          "actual": 0.488
+        }
+      ]
+    },
+    "ONGC": {
+      "label": "ONGC",
+      "n_directional": 401,
+      "n_abstain": 38,
+      "hit_rate": 0.4963,
+      "brier": 0.271,
+      "win_rate": 0.4763,
+      "expectancy_pct": -0.0833,
+      "compounded_return_pct": -31.82,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 7,
+          "stated": 0.545,
+          "actual": 0.429
+        },
+        {
+          "bucket": "55-60%",
+          "n": 49,
+          "stated": 0.574,
+          "actual": 0.551
+        },
+        {
+          "bucket": "60-65%",
+          "n": 63,
+          "stated": 0.627,
+          "actual": 0.508
+        },
+        {
+          "bucket": "65-100%",
+          "n": 282,
+          "stated": 0.65,
+          "actual": 0.486
+        }
+      ]
+    },
+    "NTPC": {
+      "label": "NTPC",
+      "n_directional": 388,
+      "n_abstain": 51,
+      "hit_rate": 0.451,
+      "brier": 0.2832,
+      "win_rate": 0.4175,
+      "expectancy_pct": -0.0924,
+      "compounded_return_pct": -32.82,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 8,
+          "stated": 0.545,
+          "actual": 0.375
+        },
+        {
+          "bucket": "55-60%",
+          "n": 52,
+          "stated": 0.578,
+          "actual": 0.519
+        },
+        {
+          "bucket": "60-65%",
+          "n": 74,
+          "stated": 0.625,
+          "actual": 0.432
+        },
+        {
+          "bucket": "65-100%",
+          "n": 254,
+          "stated": 0.65,
+          "actual": 0.445
+        }
+      ]
+    },
+    "TATASTEEL": {
+      "label": "TATASTEEL",
+      "n_directional": 384,
+      "n_abstain": 55,
+      "hit_rate": 0.4948,
+      "brier": 0.2678,
+      "win_rate": 0.474,
+      "expectancy_pct": -0.0784,
+      "compounded_return_pct": -30.3,
+      "reliability_curve": [
+        {
+          "bucket": "50-55%",
+          "n": 12,
+          "stated": 0.546,
+          "actual": 0.5
+        },
+        {
+          "bucket": "55-60%",
+          "n": 62,
+          "stated": 0.574,
+          "actual": 0.419
+        },
+        {
+          "bucket": "60-65%",
+          "n": 44,
+          "stated": 0.625,
+          "actual": 0.5
+        },
+        {
+          "bucket": "65-100%",
+          "n": 266,
+          "stated": 0.65,
+          "actual": 0.511
+        }
+      ]
+    }
+  },
+  "honesty_note": "Fixed-prior model (no parameters fitted to this data). Daily-direction hit-rates near 50-55% are expected and honest; the value is in calibration + abstention + position/band sizing, not in beating the directional ceiling. NOT investment advice.",
+  "disclaimer": "Anvil Live produces calibrated probabilities and ranges from live market data for ANALYTICS & EDUCATION only. It is NOT investment advice and makes NO guarantee of profit. Predictions are uncertain; act at your own risk. Read-only \u2014 no orders are ever placed. Reliability is tracked honestly and shown openly so you can judge for yourself before trusting any tip."
+}

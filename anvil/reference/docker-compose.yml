@@ -1,0 +1,18 @@
+# Phase 0 — single backend container (Python 3.12) serving the API + static page.
+# Postgres/Timescale + Redis are intentionally NOT here yet (see
+# docs/decisions/0003-storage-duckdb-sqlite-defer-postgres-redis.md).
+services:
+  backend:
+    build: ./backend
+    image: oip-backend:phase0
+    working_dir: /app/backend
+    environment:
+      # config.py derives the data dir from the repo root, but we pin it explicitly here.
+      OIP_DATA_DIR: /app/data
+      PYTHONPATH: /app/backend/src
+    volumes:
+      # Bind-mount the whole repo so source + data/ + fixtures are live inside the container.
+      - ./:/app
+    ports:
+      - "8000:8000"
+    command: uvicorn oip.api.app:app --host 0.0.0.0 --port 8000
