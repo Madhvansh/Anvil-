@@ -85,6 +85,7 @@ def _legacy_fallback() -> dict | None:
 def _compute() -> dict:
     """Run the dynamic universe through the live full-stack stock predictor."""
     from ..calibration.store import CalibratorStore
+    from ..ingest.instruments import get_master, load_cached_instruments
     from ..ingest.source import pick_connector
     from ..ledger.ledger import CalibrationLedger
     from .eod import tip_source_for
@@ -92,6 +93,15 @@ def _compute() -> dict:
     from .stocks import rank_universe_live
     from .store import TipValidationStore
     from .universe import select_universe
+
+    # Single-stock chains/candles resolve via the Upstox instrument master (indices use a hardcoded
+    # map; stocks need the dump). `anvil go-live` preps it, but plain `serve` doesn't — lazy-load the
+    # cached dump once so live stock tips work regardless of how the server was launched.
+    if not get_master().options_by_symbol:
+        try:
+            load_cached_instruments()
+        except Exception:  # noqa: BLE001 - degrade to whatever the master already has
+            pass
 
     conn, _status = pick_connector()
     src = tip_source_for(conn.name)
